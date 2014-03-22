@@ -19,3 +19,5 @@ nosetests.xml
 *.pyc
 *.*~
 MANIFEST~
+
+server/server_config.py
