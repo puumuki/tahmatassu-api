@@ -85,8 +85,9 @@ def list_recipes():
 	return json.dumps(storage.list())
 
 @app.errorhandler(404)
-def page_not_found(error):
+def page_not_found(error):	
 	return response(key='resource.not.found', statuscode=httpcode.NOT_FOUND)
 
 if __name__ == "__main__":
-    app.run(host=app.config['HOST'])
+    app.run(host=app.config['HOST'],
+    		port=app.config['PORT'])
