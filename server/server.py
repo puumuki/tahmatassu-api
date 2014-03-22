@@ -89,4 +89,4 @@ def page_not_found(error):
 	return response(key='resource.not.found', statuscode=httpcode.NOT_FOUND)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host=app.config['HOST'])
