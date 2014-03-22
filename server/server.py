@@ -13,20 +13,19 @@ import httpcode
 from localization.utils import msg
 from localization.utils import language
 from users import users
+import server_config
 
 from tahmatassu.recipe import Recipe
 from tahmatassu.recipestorage import RecipeStorage
 from tahmatassu.tassuexception import TassuException
 
-APPLICATION_NAME = "tahmatassu-api"
+app = Flask(__name__)
+app.config.from_object(server_config)
 
-#Set server language to finnish
-language('fi')
+#Set server language response language
+language(app.config['LANGUAGE'] if 'LANGUAGE' in app.config else 'fi')
 
 storage = RecipeStorage(directory='recipes')
-
-app = Flask(__name__)
-app.secret_key = 'ASDFA//Asdfadsf@@@'
 
 def response(statuscode, key, arguments=None):
 	return json.dumps(msg(key, arguments), ensure_ascii=False), statuscode
