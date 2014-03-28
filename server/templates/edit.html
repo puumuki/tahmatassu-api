@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Tahmatassujen reseptit{% endblock %}
+
+{% block content %}
+<div id="editor" class="jumbotron">  
+
+	<div class="input-group">
+		<input type="text" class="form-control" name="filename" value="{{filename}}">
+		<span class="input-group-addon">.md</span>
+	</div>
+
+	<!-- Textarea -->
+<div class="control-group">		
+<textarea class="fullsize-textarea" id="textarea" name="recipe-markdown">
+{% autoescape off%}{{markdown}}{% endautoescape %}
+</textarea>
+</div>	
+	<div class="btn-group pull-right">
+		<a href="/recipe/{{filename}}"><button type="button" class="btn btn-default cancel-btn">Peruuta</button></a>
+  		<button type="button" class="btn btn-default save-btn">Tallenna</button>
+	</div>	
+</div>
+{% endblock %}

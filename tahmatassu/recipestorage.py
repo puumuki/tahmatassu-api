@@ -6,6 +6,8 @@ from os import listdir
 from os.path import isfile, join
 from tassuexception import TassuException
 import codecs
+from collections import namedtuple
+from operator import attrgetter
 
 """
 RecipeStorage class contains IO-operations
@@ -17,9 +19,25 @@ class RecipeStorage:
 	def __init__(self, directory):
 		self.directory = directory;
 
-	def list(self):
+	def list(self):		
 		files = [ f for f in listdir(self.directory) if isfile(join(self.directory,f))]
 		return sorted(files)
+
+	"""
+	Return list of tuples containing recipe file name and recipe's titles
+	Return [(file name, title)]
+	"""
+	def list_titles(self):
+		names = []
+		files =  self.list()
+
+		FileAndTitle = namedtuple('FileAndTitle', 'filename title')
+
+		for file_name in files:
+			with codecs.open(os.path.join( self.directory, file_name ), "r", "utf-8") as f:				
+				names.append(FileAndTitle(file_name, f.readline()))
+
+		return sorted(names, key=attrgetter('title'))
 
 	def load(self, name):
 		try:

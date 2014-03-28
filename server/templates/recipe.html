@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Tahmatassujen reseptit{% endblock %}
+
+{% block content %}
+<div class='jumbotron'> 
+	<div class="btn-group pull-right">
+		<a href="/edit/{{filename}}"><button type="button" class="btn btn-default">Muokkaa</button></a>
+	</div>
+	{% autoescape off%}{{markdown}}{% endautoescape %}
+</div>
+{% endblock %}

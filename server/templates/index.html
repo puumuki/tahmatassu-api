@@ -1,81 +1,13 @@
-<html>
-	<head>
-	<style>
-	* {
-		font-family: monospace;		
-		font-size: 12px;
-	}	
+{% extends "base.html" %}
+{% block title %}Tahmatassujen reseptit{% endblock %}
 
-	.interface {
-		background: #eeeeee;
-		padding: 0.5em 2em;
-		margin: 0.5em;
-	}
+{% block content %}
 
-	.method {
-		color: blue;
-	}
 
-	.param {
-		color: orange;
-	}
+<div class="list-group">  
+{% for recipe in recipes %}
+  <a class="list-group-item" href="recipe/{{ recipe.filename }}">{{ recipe.title }}</a>
+{% endfor %}
+</div>
 
-	.route {
-		color: green;
-	}
-
-	pre {
-		color: green;
-	}
-
-	</style>
-	</head>
-	<body>
-		<h1>Tahmatassu-API
-		<div class="interface">
-			<h3>Method: <span class="method">GET</span></h3>
-			<p>Route: <span class="route">/index</span></p>
-			<p>Return this page</p>
-		</div>
-
-		<div class="interface">
-			<h3>Method: <span class="method">GET</span></h3>
-			<p>Route: <span class="route">/recipe/</span><span class="param">:name</span></p>			
-			<p>Return recipe with given <span class="param">:name</span></p>
-<pre>
-Response JSON:
-{
-   "markdown":"",
-   "name":"Lihapullat.md",
-   "modified":"2014-03-20 23:05:10",
-   "created":"2014-03-20 20:17:55"
-}
-</pre>
-		</div>
-
-		<div class="interface">
-			<h3>Method: <span class="method">GET</span></h3>
-			<p>Route: <span class="route">/recipes</span></p>
-			<p>List names of all recipes, these names can be used to read fetch the recipes</p>
-<pre>
-Response JSON:
-["Lihapullat.md", "Repesti.md","Desu.md"]
-</pre>			
-		</div>
-
-		<div class="interface">
-			<h3>Method: <span class="method">PUT,POST</span></h3>
-			<p>Route: <span class="route">/recipe</span></p>
-			<p>Store a recipe to service. Takes a JSON-data in body.</p>
-<pre>
-Response JSON:
-{
-   "markdown":"",
-   "name":"Lihapullat",
-   "modified":"2014-03-20 23:05:10",
-   "created":"2014-03-20 20:17:55"
-}
-</pre>
-		</div>
-	</body>
-</html>
+{% endblock %}

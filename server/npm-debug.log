@@ -1,0 +1,34 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   '-g',
+1 verbose cli   'brunch/brunch.git' ]
+2 info using npm@1.1.62
+3 info using node@v0.8.11
+4 verbose node symlink C:\Program Files\nodejs\\node.exe
+5 verbose read json C:\Users\Teemuki\AppData\Roaming\npm\package.json
+6 verbose read json C:\Users\Teemuki\AppData\Roaming\npm\package.json
+7 verbose cache add [ 'brunch/brunch.git', null ]
+8 silly cache add name=undefined spec="brunch/brunch.git" args=["brunch/brunch.git",null]
+9 verbose parsed url { pathname: 'brunch/brunch.git',
+9 verbose parsed url   path: 'brunch/brunch.git',
+9 verbose parsed url   href: 'brunch/brunch.git' }
+10 silly lockFile 5f74b159-brunch-brunch-git brunch/brunch.git
+11 verbose lock brunch/brunch.git C:\Users\Teemuki\AppData\Roaming\npm-cache\5f74b159-brunch-brunch-git.lock
+12 silly lockFile 5f74b159-brunch-brunch-git brunch/brunch.git
+13 error addLocal Could not install brunch/brunch.git
+14 error Error: ENOENT, stat 'D:\Teemu\Ohjelmointi\Git\tahmatassu-api\server\brunch\brunch.git'
+15 error If you need help, you may report this log at:
+15 error     <http://github.com/isaacs/npm/issues>
+15 error or email it to:
+15 error     <npm-@googlegroups.com>
+16 error System Windows_NT 6.1.7601
+17 error command "C:\\Program Files\\nodejs\\\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "-g" "brunch/brunch.git"
+18 error cwd D:\Teemu\Ohjelmointi\Git\tahmatassu-api\server
+19 error node -v v0.8.11
+20 error npm -v 1.1.62
+21 error path D:\Teemu\Ohjelmointi\Git\tahmatassu-api\server\brunch\brunch.git
+22 error code ENOENT
+23 error errno 34
+24 verbose exit [ 34, true ]

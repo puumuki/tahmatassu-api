@@ -71,6 +71,15 @@ class TestRecipeStorage(unittest.TestCase):
 		self.assertEqual(recipe.name, 'MustikkaPiirakka.md','Recipe name should be MustikkaPiirakka.md')
 		self.assertIsNotNone(recipe.markdown, 'Recipe should have some markdown on it.')
 
+	def test_loading_recipe(self):
+		storage = RecipeStorage(TEST_DIRECTORY);
+		recipe = Recipe('MustikkaPiirakka.md', MARKDOWN)						
+		storage.save(recipe)
+
+		recipes = storage.list_titles()
+
+		self.assertEqual(1, len(recipes),'There should be at least one recipe at the list')	
+
 	def test_turning_recipe_to_json(self):
 		recipe = Recipe('MustikkaPiirakka.MD', 'Lahnaaa....')
 		recipe.to_json()

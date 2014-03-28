@@ -13,7 +13,7 @@ class TestServer(unittest.TestCase):
 
 	def test_existing_localization(self):
 		language('fi')
-		self.assertEqual('Reseptiä ei löytynyt',msg('recipe.not.found'))
+		self.assertEqual(u'Reseptiä ei löytynyt',msg('recipe.not.found'))
 
 	def test_existing_localization_with_arguments(self):
 		language('fi')
