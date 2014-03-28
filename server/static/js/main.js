@@ -34,13 +34,13 @@
 			$.ajax({
 				url: '/api/recipe',
 				data: JSON.stringify(data),
-				      type: "POST",        		
-        		dataType: "json",
-        		processData: false,
-        		contentType: 'application/json',
-        		context: this,
-		        failure: this._onSaveFailure
-		        success: this._onSaveSuccess,		        
+					  type: "POST",        		
+				dataType: "json",
+				processData: false,
+				contentType: 'application/json',
+				context: this,
+				failure: this._onSaveFailure,
+				success: this._onSaveSuccess,		        
 			});
 		}
 	};

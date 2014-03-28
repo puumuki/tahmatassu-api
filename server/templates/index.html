@@ -6,8 +6,12 @@
 
 <div class="list-group">  
 {% for recipe in recipes %}
-  <a class="list-group-item" href="recipe/{{ recipe.filename }}">{{ recipe.title }}</a>
+  <span class="list-group-item"><a href="recipe/{{ recipe.filename }}">{{ recipe.title }}</a></span>
 {% endfor %}
 </div>
+
+<div class="btn-group pull-right">
+	<a href="/edit"><button type="button" class="btn btn-default cancel-btn">Luo uusi</button></a>
+</div>	
 
 {% endblock %}

@@ -39,16 +39,19 @@ def response(statuscode, key, arguments=None):
 	
 @app.route("/")
 def index():	
-	return render_template('index.html', recipes=storage.list_titles())
+	return render_template('index.html',
+							nav='recipes',
+							recipes=storage.list_titles())
 
 @app.route("/edit")
 def create_new():		
-	return render_template('edit.html', filename='', markdown='')
+	return render_template('edit.html', editurl='/', markdown='')
 
 @app.route("/edit/<recipe>")
-def edit(recipe):	
+def edit(recipe):		
 	recipe = storage.load(recipe)
-	return render_template('edit.html', filename=recipe.name, 
+	return render_template('edit.html', editurl= '/recipe/'+recipe.name,
+										filename=recipe.name,
 										markdown=recipe.markdown)
 
 
@@ -61,7 +64,7 @@ def recipe(recipe):
 
 @app.route("/about")
 def about():
-	return render_template('about.html')
+	return render_template('about.html',nav='about')
 
 @app.route("/login/<username>/<password>", methods=['POST'])
 def login(username, password):	

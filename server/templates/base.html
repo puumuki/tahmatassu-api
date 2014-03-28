@@ -37,8 +37,8 @@
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="/">Reseptit</a></li>            
-          <li class="" ><a href="/about">Info</a></li>            
+          <li class="{% if nav == "recipes" %}active{% endif %}"><a href="/">Reseptit</a></li>            
+          <li class="{% if nav == "about" %}active{% endif %}" ><a href="/about">Info</a></li>            
         </ul>
       </div><!--/.nav-collapse -->
     </div>
