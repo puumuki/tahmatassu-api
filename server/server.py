@@ -45,12 +45,13 @@ def index():
 
 @app.route("/edit")
 def create_new():		
-	return render_template('edit.html', editurl='/', markdown='')
+	return render_template('edit.html', nav='edit',editurl='/', markdown='')
 
 @app.route("/edit/<recipe>")
 def edit(recipe):		
 	recipe = storage.load(recipe)
-	return render_template('edit.html', editurl= '/recipe/'+recipe.name,
+	return render_template('edit.html', nav='edit',
+										editurl= '/recipe/'+recipe.name,
 										filename=recipe.name,
 										markdown=recipe.markdown)
 
@@ -61,6 +62,13 @@ def recipe(recipe):
 	markdown = markdowner.convert(recipeobj.markdown)
 	return render_template('recipe.html',filename=recipeobj.name, 
 										 markdown=markdown)
+
+@app.route("/api/recipe/<recipe>", methods=['DELETE'])
+def delete(recipe):
+	if storage.delete(recipe):
+		return response(key='recipe.delete', statuscode=httpcode.OK)
+	else:
+		return response(key='recipe.not_deleted', statuscode=httpcode.NOT_FOUND)
 
 @app.route("/about")
 def about():

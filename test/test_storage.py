@@ -85,8 +85,36 @@ class TestRecipeStorage(unittest.TestCase):
 		recipe.to_json()
 
 	def test_loading_non_existing_recipe(self):
-		storage = RecipeStorage(TEST_DIRECTORY);
+		storage = RecipeStorage(TEST_DIRECTORY)
 		self.assertRaises(TassuException, storage.load, 'EiTallaistaOle.md')		
+
+	def test_filtering(self):
+		storage = RecipeStorage(TEST_DIRECTORY)
+		recipe = Recipe('A.md', MARKDOWN)
+		storage.save(recipe)
+		recipe = Recipe('B.md', MARKDOWN)
+		recipe = Recipe('B.MD', MARKDOWN)
+		storage.save(recipe)
+		recipe = Recipe('C.md', MARKDOWN)
+		recipe = Recipe('C.txt', MARKDOWN)
+		storage.save(recipe)
+		recipe = Recipe('.gitignore', MARKDOWN)
+		storage.save(recipe)
+		recipes = storage.list()
+		self.assertNotIn('.gitignore',recipes)
+		self.assertNotIn('C.txt',recipes)
+		self.assertIn('B.MD',recipes)
+		self.assertIn('A.md',recipes)
+
+	def test_deleting(self):
+		storage = RecipeStorage(TEST_DIRECTORY)
+		recipe = Recipe('A.md', MARKDOWN)
+		storage.save(recipe)
+		recipe = Recipe('B.md', MARKDOWN)
+		storage.save(recipe)
+		storage.delete('A.md')
+		recipes = storage.list()
+		self.assertNotIn('A.md',recipes)
 
 if __name__ == '__main__':
 	unittest.main()

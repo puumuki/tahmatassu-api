@@ -9,6 +9,8 @@ import codecs
 from collections import namedtuple
 from operator import attrgetter
 
+
+
 """
 RecipeStorage class contains IO-operations
 for storing, loading, renaming and listing
@@ -21,7 +23,12 @@ class RecipeStorage:
 
 	def list(self):		
 		files = [ f for f in listdir(self.directory) if isfile(join(self.directory,f))]
+		files = filter(lambda filename:self.filter_rules(filename), files)
 		return sorted(files)
+
+	def filter_rules(self,filename):
+		if filename[0] == '.': return False
+		if filename.endswith('.md') or filename.endswith('.MD'): return True
 
 	"""
 	Return list of tuples containing recipe file name and recipe's titles
@@ -57,13 +64,16 @@ class RecipeStorage:
 		except IOError as error:
 			msg = 'Could not open file from: %s/%s ' % (self.directory, name)
 			raise TassuException(msg, error)
-		except WindowsError as error:
+		except OSError as error:
 			msg = 'Could not open file from: %s/%s ' % (self.directory, name)
 			raise TassuException(msg, error)
 
 	def rename(self, oldname, newname ):
 		os.rename( self.directory + "/" +oldname, 
 				   self.directory + "/" +newname)
+
+	def delete(self, name):
+		self.rename(name, "."+name)
 
 	def save(self,recipe):
 		with open(self.directory+'/'+recipe.name, 'w') as file:

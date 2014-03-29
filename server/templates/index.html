@@ -4,11 +4,12 @@
 {% block content %}
 
 
-<div class="list-group">  
+<ul class="list-group recipe-list">  
 {% for recipe in recipes %}
-  <span class="list-group-item"><a href="recipe/{{ recipe.filename }}">{{ recipe.title }}</a></span>
+  <li class="list-group-item"><a href="recipe/{{ recipe.filename }}">{{ recipe.title }}</a>
+  <span class="remove" data-recipename="{{recipe.filename}}">&times;</span></li>
 {% endfor %}
-</div>
+</ul>
 
 <div class="btn-group pull-right">
 	<a href="/edit"><button type="button" class="btn btn-default cancel-btn">Luo uusi</button></a>
