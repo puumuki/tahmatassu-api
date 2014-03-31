@@ -3,16 +3,21 @@
 
 {% block content %}
 
-
 <ul class="list-group recipe-list">  
 {% for recipe in recipes %}
-  <li class="list-group-item"><a href="recipe/{{ recipe.filename }}">{{ recipe.title }}</a>
-  <span class="remove" data-recipename="{{recipe.filename}}">&times;</span></li>
+  <li class="list-group-item">
+  	<a href="recipe/{{ recipe.filename }}">{{ recipe.title }}</a>
+  	{% if authenticated %}
+  	<span class="remove" data-recipename="{{recipe.filename}}">&times;</span>
+  	{% endif %}
+  </li>
 {% endfor %}
 </ul>
 
+{% if authenticated %}
 <div class="btn-group pull-right">
 	<a href="/edit"><button type="button" class="btn btn-default cancel-btn">Luo uusi</button></a>
 </div>	
+{% endif %}
 
 {% endblock %}

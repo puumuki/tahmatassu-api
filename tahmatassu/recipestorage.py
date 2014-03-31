@@ -72,8 +72,18 @@ class RecipeStorage:
 		os.rename( self.directory + "/" +oldname, 
 				   self.directory + "/" +newname)
 
+	"""
+	Do not delete file, rename the file by adding dot as prefix to filename.
+	After that file is not anymore listed.
+	Return True if file was rename
+	"""
 	def delete(self, name):
-		self.rename(name, "."+name)
+		try:
+			self.rename(name, "."+name)
+			return True
+		except OSError as error:
+			raise TassuException("Failed to delete/rename file", error)
+
 
 	def save(self,recipe):
 		with open(self.directory+'/'+recipe.name, 'w') as file:

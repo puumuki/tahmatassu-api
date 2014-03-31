@@ -6,6 +6,8 @@ from flask import render_template
 from flask import session
 from flask import jsonify
 from flask import url_for
+from flask import g
+from flask import redirect
 
 import hashlib
 import json
@@ -34,23 +36,39 @@ language(app.config['LANGUAGE'] if 'LANGUAGE' in app.config else 'fi')
 
 storage = RecipeStorage(directory='recipes')
 
+def is_authenticated():
+	return 'username' in session and session['username'] != None
+
 def response(statuscode, key, arguments=None):
 	return json.dumps(msg(key, arguments), ensure_ascii=False), statuscode
 	
 @app.route("/")
 def index():	
 	return render_template('index.html',
+							authenticated=is_authenticated(),
 							nav='recipes',
 							recipes=storage.list_titles())
 
+	
+@app.route("/login")
+def login_page():	
+	return render_template('login.html',
+							authenticated=is_authenticated())
+
 @app.route("/edit")
 def create_new():		
-	return render_template('edit.html', nav='edit',editurl='/', markdown='')
+	return render_template('edit.html', nav='edit', 
+										editurl='/', 
+										markdown='')
 
 @app.route("/edit/<recipe>")
-def edit(recipe):		
+def edit(recipe):
+	if not is_authenticated():
+		return redirect("/recipe/"+recipe, code=302)
+
 	recipe = storage.load(recipe)
-	return render_template('edit.html', nav='edit',
+	return render_template('edit.html', authenticated=is_authenticated(),
+										nav='edit',
 										editurl= '/recipe/'+recipe.name,
 										filename=recipe.name,
 										markdown=recipe.markdown)
@@ -60,34 +78,44 @@ def edit(recipe):
 def recipe(recipe):
 	recipeobj = storage.load(recipe)
 	markdown = markdowner.convert(recipeobj.markdown)
-	return render_template('recipe.html',filename=recipeobj.name, 
+	return render_template('recipe.html',authenticated=is_authenticated(),
+										 filename=recipeobj.name, 
 										 markdown=markdown)
-
-@app.route("/api/recipe/<recipe>", methods=['DELETE'])
-def delete(recipe):
-	if storage.delete(recipe):
-		return response(key='recipe.delete', statuscode=httpcode.OK)
-	else:
-		return response(key='recipe.not_deleted', statuscode=httpcode.NOT_FOUND)
 
 @app.route("/about")
 def about():
 	return render_template('about.html',nav='about')
 
-@app.route("/login/<username>/<password>", methods=['POST'])
-def login(username, password):	
+def authenticate(username, password):
 	sha1 = hashlib.sha1()
 	sha1.update(password)	
 	if username in users and sha1.hexdigest() == users[username]['hash']:
 		session['username'] = username
-		return response(key='login.granted', statuscode=httpcode.OK)
+		return True
 	else:
-		return response(key='login.denied', statuscode=httpcode.ACCESS_DENIED)		
+		return False
+
+@app.route("/api/login", methods=['POST'])
+def login():			
+	if authenticate(request.form.get('username'),request.form.get('password')):
+		return redirect("/", code=302)
+	else:		
+		return login_page()
 	
-@app.route("/logout", methods=['POST'])
+@app.route("/logout", methods=['POST','GET'])
 def logout():
 	session.pop('username',None)
-	return "", httpcode.OK
+	return redirect('/')
+
+@app.route("/api/recipe/<recipe>", methods=['DELETE'])
+def delete(recipe):
+	if not is_authenticated():
+		return response(key='not.authority', statuscode=httpcode.UNAUTHORIZED)
+
+	if storage.delete(recipe):
+		return response(key='recipe.delete', statuscode=httpcode.OK)
+	else:
+		return response(key='recipe.not_deleted', statuscode=httpcode.NOT_FOUND)
 
 @app.route("/api/recipe",  methods=['GET'])
 def get_recipe():
@@ -102,8 +130,9 @@ def get_load_recipe(name):
 	
 @app.route("/api/recipe",  methods=['PUT','POST'])
 def put_recipe():
-	#if session['username'] is None:
-	#	return response(key='access.denied', statuscode=httpcode.ACCESS_DENIED)
+	if not is_authenticated():
+		return response(key='not.authority', statuscode=httpcode.UNAUTHORIZED)
+
 	try:						
 		recipe = Recipe(name=request.json[u'name'], 
 						markdown=request.json[u'markdown'])

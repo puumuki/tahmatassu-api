@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Tahmatassujen reseptit{% endblock %}
+
+{% block content %}
+<div class='jumbotron'> 
+	<form class="form-signin" role="form" method="post" action="/api/login" >
+		<h2 class="form-signin-heading">Kirjaudu sisään</h2>
+		<input type="text" class="form-control" placeholder="Käyttäjätunnus" name="username" required autofocus>
+		<input type="password" class="form-control" placeholder="Salasana" name="password" required>
+		<br />
+		<button class="btn btn-lg btn-primary btn-block" type="submit">Kirjaudu</button>
+	</form>
+</div>
+{% endblock %}

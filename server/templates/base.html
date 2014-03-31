@@ -36,15 +36,19 @@
         <a href="/"><img class="pawlogo" src="/static/img/paw.png" /></a>      
       </div>
       <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
+        <ul class="nav navbar-nav">          
           <li class="{% if nav == "recipes" %}active{% endif %}"><a href="/">Reseptit</a></li>            
           <li class="{% if nav == "about" %}active{% endif %}" ><a href="/about">Info</a></li>        
         </ul>
-
         <ul class="nav navbar-nav navbar-right">
-          <li class="{% if nav == "edit" %}active{% endif %}" ><a href="/edit">Luo uusi</a></li>       
+          {% if not authenticated %}
+          <li class="{% if nav == "login" %}active{% endif %}" ><a href="/login">Kirjaudu</a></li>
+          {% endif %}
+          {% if authenticated %}
+          <li><a href="/logout">Uloskirjaudu</a></li>
+          {% endif %}
         </ul>
-
+        
       </div><!--/.nav-collapse -->
     </div>
   </div>
@@ -58,7 +62,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Haluatko varmasti poistaa reseptin?</h4>
+            <h4 class="modal-title">Haluatko varmasti poistaa reseptin?</h4>            
           </div>
           <div class="modal-body">
             <button type="button" class="btn btn-default" data-dismiss="modal">Peruuta</button>

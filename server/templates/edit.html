@@ -5,18 +5,23 @@
 <div id="editor" class="jumbotron">  
 
 	<div class="input-group">
-		<input type="text" class="form-control" name="filename" value="{{filename}}">
+		<input type="text" class="form-control" 
+			   placeholder="Tiedoston nimi" 
+			   name="filename" 
+			   value="{{filename}}" readonly
+			   data-toggle="popover" data-placement="right" 
+			   data-content="Tiedoston nimi on jo käytössä, nimeä resepti uudelleen.">
 		<span class="input-group-addon">.md</span>
 	</div>
 
 	<!-- Textarea -->
 <div class="control-group">		
-<textarea class="fullsize-textarea" id="textarea" name="recipe-markdown">
+<textarea class="fullsize-textarea" id="textarea" name="recipe-markdown" autofocus>
 {% autoescape off%}{{markdown}}{% endautoescape %}
 </textarea>
 </div>	
-	<div class="btn-group pull-right">
 
+	<div class="btn-group pull-right">
 		<a href="{{editurl}}">
 			<button type="button" class="btn btn-default cancel-btn">Peruuta</button>
 		</a>
