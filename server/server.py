@@ -9,12 +9,15 @@ from flask import url_for
 from flask import g
 from flask import redirect
 
-import hashlib, json, httpcode, os
+import hashlib, json, httpcode, os, logging
 
 from localization.utils import msg
 from localization.utils import language
 from users import users
 import server_config
+
+from logging.handlers import RotatingFileHandler
+from logging import Formatter
 
 #https://github.com/trentm/python-markdown2
 from markdown2 import Markdown
@@ -29,11 +32,25 @@ markdowner = Markdown()
 app = Flask(__name__)
 app.config.from_object(server_config)
 
+logging_file = os.path.join( os.path.dirname(__file__), 'logs', 'tahmatassu.log' )   
+file_handler = RotatingFileHandler(logging_file, 
+									mode='a', 
+									maxBytes=10000, 
+									backupCount=4, 
+									encoding='utf-8')
+
+file_handler.setFormatter(Formatter('%(asctime)s %(levelname)s %(message)s [in %(pathname)s:%(lineno)d]'))
+file_handler.setLevel(logging.DEBUG)
+
+app.logger.addHandler(file_handler)
+
 #Set server language response language
 language(app.config['LANGUAGE'] if 'LANGUAGE' in app.config else 'fi')
 
 recipes_directory = os.path.join( os.path.dirname(__file__), 'recipes' )
 storage = RecipeStorage(directory=recipes_directory)
+
+app.logger.info('Started tahmatassu application')
 
 def is_authenticated():
 	return 'username' in session and session['username'] != None
@@ -95,10 +112,12 @@ def authenticate(username, password):
 		return False
 
 @app.route("/api/login", methods=['POST'])
-def login():			
+def login():	
 	if authenticate(request.form.get('username'),request.form.get('password')):
+		app.logger.info('User %s authencated and logged in.' % request.form.get('username'))
 		return redirect("/", code=302)
-	else:		
+	else:
+		app.logger.info('User %s failed to authenticate.' % request.form.get('username'))		
 		return login_page()
 	
 @app.route("/logout", methods=['POST','GET'])
@@ -132,14 +151,18 @@ def put_recipe():
 	if not is_authenticated():
 		return response(key='not.authority', statuscode=httpcode.UNAUTHORIZED)
 
+	app.logger.info( "%s saved a recipe %s " % (session.get('username'), request.json[u'name']))
+
 	try:						
 		recipe = Recipe(name=request.json[u'name'], 
 						markdown=request.json[u'markdown'])
 		storage.save(recipe)
 		return response(key='recipe.was.saved.succesfully', statuscode=httpcode.OK)
 	except KeyError as error:
+		app.logger.error(error)
 		return response(key='missing.key', arguments=(str(error),), statuscode=httpcode.NOT_AVAILABLE)		
-	except ValueError as error:		
+	except ValueError as error:
+		app.logger.error(error)
 		return response(key='request.is.expecting.json', statuscode=httpcode.NOT_AVAILABLE)
 		
 @app.route("/api/recipes",  methods=['GET'])
@@ -147,7 +170,8 @@ def list_recipes():
 	return json.dumps(storage.list())
 
 @app.errorhandler(404)
-def page_not_found(error):	
+def page_not_found(error):
+	app.logger.error(error)	
 	return response(key='resource.not.found', statuscode=httpcode.NOT_FOUND)
 
 if __name__ == "__main__":
