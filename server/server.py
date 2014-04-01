@@ -9,9 +9,7 @@ from flask import url_for
 from flask import g
 from flask import redirect
 
-import hashlib
-import json
-import httpcode
+import hashlib, json, httpcode, os
 
 from localization.utils import msg
 from localization.utils import language
@@ -34,7 +32,8 @@ app.config.from_object(server_config)
 #Set server language response language
 language(app.config['LANGUAGE'] if 'LANGUAGE' in app.config else 'fi')
 
-storage = RecipeStorage(directory='recipes')
+recipes_directory = os.path.join( os.path.dirname(__file__), 'recipes' )
+storage = RecipeStorage(directory=recipes_directory)
 
 def is_authenticated():
 	return 'username' in session and session['username'] != None
@@ -152,6 +151,6 @@ def page_not_found(error):
 	return response(key='resource.not.found', statuscode=httpcode.NOT_FOUND)
 
 if __name__ == "__main__":
-	app.run(host=app.config['HOST'],
-			port=app.config['PORT'],
-			debug=True)
+	app.run(host=app.config.get('HOST', '0.0.0.0'),
+			port=app.config.get('PORT', 8080),
+			debug=app.config.get('DEBUG', False))
