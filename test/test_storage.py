@@ -116,5 +116,13 @@ class TestRecipeStorage(unittest.TestCase):
 		recipes = storage.list()
 		self.assertNotIn('A.md',recipes)
 
+	def test_storing_backup(self):
+		storage = RecipeStorage(TEST_DIRECTORY, backup=True)
+		recipe = Recipe('A.md', MARKDOWN)
+		storage.save(recipe)
+		storage.save(recipe)		
+		storage.save(recipe)
+		self.assertEqual(2, len(os.listdir(TEST_DIRECTORY)))
+
 if __name__ == '__main__':
 	unittest.main()

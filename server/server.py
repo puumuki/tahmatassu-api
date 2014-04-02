@@ -48,7 +48,7 @@ app.logger.addHandler(file_handler)
 language(app.config['LANGUAGE'] if 'LANGUAGE' in app.config else 'fi')
 
 recipes_directory = os.path.join( os.path.dirname(__file__), 'recipes' )
-storage = RecipeStorage(directory=recipes_directory)
+storage = RecipeStorage(directory=recipes_directory, backup=True)
 
 app.logger.info('Started tahmatassu application')
 

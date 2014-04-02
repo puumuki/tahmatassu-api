@@ -13,6 +13,6 @@ setup(
 	license='LICENSE.txt',
 	long_description=open('README.md').read(),
 	install_requires=[],
-	keywords=[],
+	keywords=['webapp','recipe'],
 	scripts=glob.glob('bin/*.py')
 )
