@@ -91,7 +91,7 @@ def edit(recipe):
 	recipe = storage.load(recipe)
 	return render_template('edit.html', authenticated=is_authenticated(),
 										nav='edit',
-										editurl= '/recipe/'+recipe.name.split('.')[0],
+										editurl= '/recipe/'+recipe.name.split('.')[0]+'.md',
 										filename=recipe.name.split('.')[0],
 										markdown=recipe.markdown)
 
