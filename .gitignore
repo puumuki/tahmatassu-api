@@ -20,6 +20,7 @@ nosetests.xml
 *.*~
 MANIFEST~
 
+server/users.py
 server/server_config.py
 *.sublime-project
 *.sublime-workspace

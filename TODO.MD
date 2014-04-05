@@ -1,3 +1,4 @@
+Pass user after authentication to page where she/he was before authentication
 Check if file exist when creating a new recipe, notify user when trying to override a file.
 Implement image upload support.
 Implement ability to change password

@@ -11,11 +11,19 @@ Tahmatassujen reseptikirja on tarkoitettu jokapäiväiseen kotikäyttöön. Kaik
 Kaikki reseptit jotka sivulta löytyvät on testattu ja hyväksi todettuja. Mitään reseptiä ei sivustolle lisätä ellei sitä ole meidän toimesta leivottu, paistettu tai kokattu. Ja tietysti maistettu. Reseptit ja lähdekoodit vapaasti omaan käyttöön.
 
 
+Olen itse ajanut sovellusta Python 2.7 versiolla, Raspberry PI:lläni, jossa pyöritän sovellusta
+screessä. En ole vielä raaskiutunut opistekemaan sen parempia hostaus mahdollisuuksia, tiedän
+että Flask-sovelluksen saa pyörimään monessa sovelluspalvelinkehyksessä. Täytyisi varmaan tutustua aiheeseen :)
+
 Asentaminen:
 
 Mene projektin hakemistoon ja asenna tahmatassu-moduuli järjestelmään:
 
 > python setup.py install
+
+Asenna flask webserveri kirjasto
+
+> pip install flask
 
 Asenna markdown2 moduuli järjestelmään
 
