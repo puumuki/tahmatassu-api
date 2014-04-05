@@ -5,12 +5,14 @@ from recipe import Recipe
 from os import listdir
 from os.path import isfile, join
 from tassuexception import TassuException
-import codecs
+import codecs, difflib, fnmatch
 from collections import namedtuple
 from operator import attrgetter
 from datetime import datetime
 
 BACKUP_DATEFORMAT = '%Y-%m-%d %H_%M_%S'
+
+FileAndTitle = namedtuple('FileAndTitle', 'filename title')
 
 """
 RecipeStorage class contains IO-operations
@@ -22,6 +24,12 @@ class RecipeStorage:
 	def __init__(self, directory, backup=False):
 		self.backup = backup
 		self.directory = directory;
+
+	def _filter_titles(self, files_and_titles):
+		return map((lambda o: o.title), files_and_titles)
+
+	def _sort_by_title(self, files_and_titles):
+		return sorted(files_and_titles, key=attrgetter('title'))
 
 	"""
 	Return list of file names, sorted alphabetically.
@@ -49,13 +57,11 @@ class RecipeStorage:
 		names = []
 		files =  self.list()
 
-		FileAndTitle = namedtuple('FileAndTitle', 'filename title')
-
 		for file_name in files:
 			with codecs.open(os.path.join( self.directory, file_name ), "r", "utf-8") as f:				
 				names.append(FileAndTitle(file_name, f.readline()))
 
-		return sorted(names, key=attrgetter('title'))
+		return self._sort_by_title(names)
 
 	"""
 	Load a recipe from the storage, return a recipe object. If IOError or OSError is raises
@@ -123,5 +129,31 @@ class RecipeStorage:
 
 		with open(recipe_path, 'w') as file:
 			file.write(recipe.markdown.encode('UTF-8'))
-		
-			
+
+
+
+	"""
+	Make a fuzzy search to recipes titles.
+	@param {string} text search text
+	@param {int} n count of results
+	@param {int} cutoff search sensivity is value between 0 - 1
+	@return {list<FileAndTitle tuple>} 
+	"""
+	def fuzzy_search(self, text, n=3, cutoff=0.2):
+		files_and_titles = self.list_titles()
+		titles = self._filter_titles(files_and_titles)
+		titles = difflib.get_close_matches(text, titles, n=n, cutoff=cutoff)
+		files_and_titles = filter(lambda o: o.title in titles, files_and_titles)
+		return self._sort_by_title(files_and_titles)
+	
+	"""
+	Make a wildcard search to recipes titles.
+	@param {string} text search text
+	@return {list<FileAndTitle tuple>} containing recipes and names
+	"""		
+	def wildcard_search(self, text):
+		files_and_titles = self.list_titles()
+		titles = self._filter_titles(files_and_titles)
+		titles = fnmatch.filter(titles, text)
+		files_and_titles = filter(lambda o: o.title in titles, files_and_titles)
+		return self._sort_by_title(files_and_titles)

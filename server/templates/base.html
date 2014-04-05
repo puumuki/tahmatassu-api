@@ -40,6 +40,14 @@
           <li class="{% if nav == "recipes" %}active{% endif %}"><a href="/">Reseptit</a></li>            
           <li class="{% if nav == "about" %}active{% endif %}" ><a href="/about">Info</a></li>        
         </ul>
+
+        <form class="navbar-form navbar-left" role="search" action="/search">
+          <div class="form-group">
+            <input name="search" type="text" class="form-control" placeholder="Hae">
+          </div>
+          <button type="submit" class="btn btn-default">Hae</button>
+        </form>
+
         <ul class="nav navbar-nav navbar-right">
           {% if not authenticated %}
           <li class="{% if nav == "login" %}active{% endif %}" ><a href="/login">Kirjaudu</a></li>

@@ -19,7 +19,6 @@ import server_config
 from logging.handlers import RotatingFileHandler
 from logging import Formatter
 
-#https://github.com/trentm/python-markdown2
 from markdown2 import Markdown
 
 from tahmatassu.recipe import Recipe
@@ -59,13 +58,19 @@ def response(statuscode, key, arguments=None):
 	return json.dumps(msg(key, arguments), ensure_ascii=False), statuscode
 	
 @app.route("/")
-def index():	
+def index(recipes=storage.list_titles()):	
 	return render_template('index.html',
 							authenticated=is_authenticated(),
 							nav='recipes',
-							recipes=storage.list_titles())
+							recipes=recipes)
 
-	
+@app.route("/search", methods=['GET'])
+def search_page():
+	search = request.args.get(u'search')	
+	result = storage.wildcard_search(search) if '*' in search else storage.fuzzy_search(search)
+	app.logger.debug(search)
+	return index(recipes=result)
+		
 @app.route("/login")
 def login_page():	
 	return render_template('login.html',
@@ -85,8 +90,8 @@ def edit(recipe):
 	recipe = storage.load(recipe)
 	return render_template('edit.html', authenticated=is_authenticated(),
 										nav='edit',
-										editurl= '/recipe/'+recipe.name,
-										filename=recipe.name,
+										editurl= '/recipe/'+recipe.name.split('.')[0],
+										filename=recipe.name.split('.')[0],
 										markdown=recipe.markdown)
 
 
@@ -134,6 +139,13 @@ def delete(recipe):
 		return response(key='recipe.delete', statuscode=httpcode.OK)
 	else:
 		return response(key='recipe.not_deleted', statuscode=httpcode.NOT_FOUND)
+
+@app.route("/api/search/<text>", methods=['GET'])
+def search_recipe(text):
+	if '*' in text:
+		return json.dumps(storage.wildcard_search(text))
+	else:
+		return json.dumps(storage.fuzzy_search(text))
 
 @app.route("/api/recipe",  methods=['GET'])
 def get_recipe():
