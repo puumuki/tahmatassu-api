@@ -72,9 +72,10 @@ def search_page():
 	return index(recipes=result)
 		
 @app.route("/login")
-def login_page():	
+def login_page(error=None):	
 	return render_template('login.html',
-							authenticated=is_authenticated())
+							authenticated=is_authenticated(),
+							error=error)
 
 @app.route("/edit")
 def create_new():		
@@ -123,7 +124,7 @@ def login():
 		return redirect("/", code=302)
 	else:
 		app.logger.info('User %s failed to authenticate.' % request.form.get('username'))		
-		return login_page()
+		return login_page(error=True)
 	
 @app.route("/logout", methods=['POST','GET'])
 def logout():

@@ -1,6 +1,8 @@
-Implement search functionality
-Check if fil exist when creating a new recipe, notify user when trying to override a file.
+Check if file exist when creating a new recipe, notify user when trying to override a file.
 Implement image upload support.
+Implement ability to change password
+(DONE)Give an error message on failed authentication
+(DONE)Implement search functionality
 (DONE)When saving a recipe, the old version should be stored to file by appending filename with .old.<revision>.filename.md
 (DONE)Write a README.MD
 (DONE)Implement automatic backup plan for the recipes.
