@@ -45,9 +45,7 @@ app.logger.addHandler(file_handler)
 
 #Set server language response language
 language(app.config['LANGUAGE'] if 'LANGUAGE' in app.config else 'fi')
-
-recipes_directory = os.path.join( os.path.dirname(__file__), 'recipes' )
-storage = RecipeStorage(directory=recipes_directory, backup=True)
+storage = RecipeStorage(directory=app.config['RECIPE_DIRECTORY'] , backup=True)
 
 app.logger.info('Started tahmatassu application')
 
@@ -58,7 +56,9 @@ def response(statuscode, key, arguments=None):
 	return json.dumps(msg(key, arguments), ensure_ascii=False), statuscode
 	
 @app.route("/")
-def index(recipes=storage.list_titles()):	
+def index(recipes=None):
+	if not recipes:
+		recipes = storage.list_titles()	
 	return render_template('index.html',
 							authenticated=is_authenticated(),
 							nav='recipes',
@@ -181,16 +181,6 @@ def put_recipe():
 @app.route("/api/recipes",  methods=['GET'])
 def list_recipes():
 	return json.dumps(storage.list())
-
-@app.after_request
-def add_header(response):
-    """
-    Add headers to both force latest IE rendering engine or Chrome Frame,
-    and also to cache the rendered page for 10 minutes.
-    """
-    response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
-    response.headers['Cache-Control'] = 'public, max-age=0'
-    return response
 
 @app.errorhandler(404)
 def page_not_found(error):
