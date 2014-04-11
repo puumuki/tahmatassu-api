@@ -77,6 +77,13 @@ def login_page(error=None):
 							authenticated=is_authenticated(),
 							error=error)
 
+@app.route("/login/<history>")
+def login_page_history(history='', error=None):	
+	return render_template('login.html',
+							history=history,
+							authenticated=is_authenticated(),
+							error=error)
+
 @app.route("/edit")
 def create_new():		
 	return render_template('edit.html', nav='edit', 

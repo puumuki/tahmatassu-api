@@ -51,7 +51,7 @@
 
         <ul class="nav navbar-nav navbar-right">
           {% if not authenticated %}
-          <li class="{% if nav == "login" %}active{% endif %}" ><a href="/login">Kirjaudu</a></li>
+          <li class="{% if nav == "login" %}active{% endif %}" ><a href="/login/{% block history %}{% endblock %}">Kirjaudu</a></li>
           {% endif %}
           {% if authenticated %}
           <li><a href="/logout">Uloskirjaudu</a></li>

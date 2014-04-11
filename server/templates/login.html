@@ -7,6 +7,7 @@
 	<div class="alert alert-warning fade-in">Kirjautuminen epäonnistui, tarkista käyttäjätunnus ja salasana.</div>
 	{% endif %}
 	<form class="form-signin" role="form" method="post" action="/api/login" >
+		<input type="hidden" name="history" value="{{history}}" />
 		<h2 class="form-signin-heading">Kirjaudu sisään</h2>
 		<input type="text" class="form-control" placeholder="Käyttäjätunnus" name="username" required autofocus>
 		<input type="password" class="form-control" placeholder="Salasana" name="password" required>
