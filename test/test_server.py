@@ -4,6 +4,7 @@ import unittest, os, sys, shutil
 
 from server.localization.utils import language 
 from server.localization.utils import msg
+from server import server
 
 class TestServer(unittest.TestCase):
 
@@ -22,7 +23,6 @@ class TestServer(unittest.TestCase):
 	def test_changing_language(self):
 		language('en')
 		self.assertEqual('Missing key testi',msg('missing.key', ('testi',)))
-
 
 if __name__ == '__main__':
 	unittest.main()

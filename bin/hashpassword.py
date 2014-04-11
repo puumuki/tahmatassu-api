@@ -1,4 +1,5 @@
-import hashlib, sys
+import hashlib, sys, datetime
+
 
 def main(argv=None):
 
@@ -7,7 +8,11 @@ def main(argv=None):
 
 	sha1 = hashlib.sha1()
 	sha1.update(argv[1])
-	print(sha1.hexdigest())
+
+	salt = datetime.now().strftime('%s')
+
+	print(sha1.hexdigest())	
+	print(salt)
 
 if __name__ == '__main__':
 	main(sys.argv)
