@@ -42,8 +42,9 @@ def load_users(userstorage):
 	user_json_location =  app.config.get('USER_STORAGE', None)
 
 	if not user_json_location or not os.path.exists(user_json_location):
-		app.logger.warning("The user.json file don't exist, cannot load user information.")
-		app.logger.info("Check README.MD for more information.");
+		app.logger.error("The user.json file don't exist, cannot load user information.")
+		app.logger.error("Check README.MD for more information.");
+		return;
 
 	try:
 		with open(user_json_location, 'r') as json_file:
@@ -54,7 +55,7 @@ def load_users(userstorage):
 											'hash': json_data[user_obj].get('hash'),
 											'salt': json_data[user_obj].get('salt')}))
 	except OSError as error:
-		app.logger.info("Some other application uses the user.json file, cannot load user information.")
+		app.logger.error("Some other application uses the user.json file, cannot load user information.")
 
 
 #Initializing Flask
