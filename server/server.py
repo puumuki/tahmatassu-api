@@ -52,13 +52,8 @@ def search_page():
 def login_page(error=None):	
 	return render_template('login.html',
 							authenticated=is_authenticated(),
-							error=error)
-
-@app.route("/login/<history>")
-def login_page_history(history='', error=None):	
-	return render_template('login.html',
-							history=history,
-							authenticated=is_authenticated(),
+							history=request.args.get('history',''),
+							recipe=request.args.get('recipe',''),
 							error=error)
 
 @app.route("/edit")
@@ -91,11 +86,21 @@ def recipe(recipe):
 def about():
 	return render_template('about.html',nav='about')
 
+@app.route("/api")
+def api_page():
+	return render_template('api.html', nav='api')
+
+
 @app.route("/api/login", methods=['POST'])
 def login():	
+	page = '/'+request.form.get('history','index')
+	
+	if request.form.get('recipe','') != u'':
+		page += '/' + request.form.get('recipe')	
+	
 	if authenticate(request.form.get('username'),request.form.get('password')):
 		app.logger.info('User %s authencated and logged in.' % request.form.get('username'))
-		return redirect("/", code=302)
+		return redirect(page, code=302)
 	else:
 		app.logger.info('User %s failed to authenticate.' % request.form.get('username'))		
 		return login_page(error=True)
