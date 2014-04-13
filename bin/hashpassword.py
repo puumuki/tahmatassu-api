@@ -1,5 +1,8 @@
-import hashlib, sys, datetime
+import hashlib, sys, datetime, random, string
 
+
+def generate_randomness(n):
+	return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(n))
 
 def main(argv=None):
 
@@ -7,9 +10,9 @@ def main(argv=None):
 		print "Give something to hash"
 
 	sha1 = hashlib.sha1()
-	sha1.update(argv[1])
+	salt = generate_randomness(6)
 
-	salt = datetime.now().strftime('%s')
+	sha1.update(argv[1] + salt)
 
 	print(sha1.hexdigest())	
 	print(salt)
