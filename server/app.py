@@ -41,17 +41,20 @@ def create_logging_handler(config):
 def load_users(userstorage):
 	user_json_location =  app.config.get('USER_STORAGE', None)
 
-	if not user_json_location or os.path.exists(user_json_location):
+	if not user_json_location or not os.path.exists(user_json_location):
 		app.logger.warning("The user.json file don't exist, cannot load user information.")
 		app.logger.info("Check README.MD for more information.");
 
-	with open(user_json_location, 'r') as json_file:
-	    json_data = json.load(json_file)
+	try:
+		with open(user_json_location, 'r') as json_file:
+			json_data = json.load(json_file)
 
-	    for user_obj in json_data:
-			userstorage.add_user(User({'username' : user_obj,
-										'hash': json_data[user_obj].get('hash'),
-										'salt': json_data[user_obj].get('salt')}))
+			for user_obj in json_data:
+				userstorage.add_user(User({'username' : user_obj,
+											'hash': json_data[user_obj].get('hash'),
+											'salt': json_data[user_obj].get('salt')}))
+	except OSError as error:
+		app.logger.info("Some other application uses the user.json file, cannot load user information.")
 
 
 #Initializing Flask
