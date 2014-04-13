@@ -25,38 +25,46 @@ from tahmatassu.recipestorage import RecipeStorage
 
 import server_config
 
-#Initializing logging
-logging_file = os.path.join( os.path.dirname(__file__), 'logs', 'tahmatassu.log' )   
-file_handler = RotatingFileHandler(logging_file, 
-									mode='a', 
-									maxBytes=10000, 
-									backupCount=4, 
-									encoding='utf-8')
+def create_logging_handler(config):
+	logging_file = os.path.join( os.path.dirname(__file__), 'logs', 'tahmatassu.log' )   
+	file_handler = RotatingFileHandler(logging_file, 
+										mode='a', 
+										maxBytes=10000, 
+										backupCount=4, 
+										encoding='utf-8')
 
-file_handler.setFormatter(Formatter('%(asctime)s %(levelname)s %(message)s [in %(pathname)s:%(lineno)d]'))
-file_handler.setLevel(logging.DEBUG)
+	file_handler.setFormatter(Formatter('%(asctime)s %(levelname)s %(message)s [in %(pathname)s:%(lineno)d]'))
+	file_handler.setLevel(logging.DEBUG)
+
+	return file_handler
+
+def load_users(userstorage):
+	user_json_location =  app.config.get('USER_STORAGE', None)
+
+	if not user_json_location or os.path.exists(user_json_location):
+		app.logger.warning("The user.json file don't exist, cannot load user information.")
+		app.logger.info("Check README.MD for more information.");
+
+	with open(user_json_location, 'r') as json_file:
+	    json_data = json.load(json_file)
+
+	    for user_obj in json_data:
+			userstorage.add_user(User({'username' : user_obj,
+										'hash': json_data[user_obj].get('hash'),
+										'salt': json_data[user_obj].get('salt')}))
+
 
 #Initializing Flask
 app = Flask(__name__)
 app.config.from_object(server_config)
-app.logger.addHandler(file_handler)
 
-markdown = Markdown()
-userstorage = UserStorage()
+app.logger.addHandler(create_logging_handler(app.config))
 
-userstorage.add_user(User({'username' : 'teemu',
-							'hash': calculate_hash('korvasieni'+'test'),
-							'salt': 'test'}))
+app.userstorage = UserStorage()
+load_users(app.userstorage)
 
-userstorage.add_user(User({'username' : 'ressu',
-							'hash': calculate_hash('korvasieni'+'test'),
-							'salt': 'test'}))
-
-storage = RecipeStorage(directory=app.config['RECIPE_DIRECTORY'] , backup=True)
-
-app.userstorage = userstorage
-app.markdown = markdown
-app.storage = storage
+app.markdown = Markdown()
+app.storage = RecipeStorage(directory=app.config['RECIPE_DIRECTORY'] , backup=True)
 
 #Set server language response language
 language(app.config['LANGUAGE'] if 'LANGUAGE' in app.config else 'fi')
