@@ -3,7 +3,7 @@
 {% block history %}recipe&recipe={{filename}}{% endblock %}
 {% block content %}
 <div class='jumbotron'> 
-	{% if authenticated %}
+	{% if user.is_authenticated %}
 	<div class="btn-group pull-right">
 		<a href="/edit/{{filename}}"><button type="button" class="btn btn-default">Muokkaa</button></a>
 	</div>

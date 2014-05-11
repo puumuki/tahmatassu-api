@@ -50,10 +50,10 @@
         </form>
 
         <ul class="nav navbar-nav navbar-right">
-          {% if not authenticated %}
+          {% if not user.is_authenticated %}
           <li class="{% if nav == "login" %}active{% endif %}" ><a href="/login?history={% block history %}{% endblock %}">Kirjaudu</a></li>
           {% endif %}
-          {% if authenticated %}
+          {% if user.is_authenticated %}
           <li><a href="/logout">Uloskirjaudu</a></li>
           {% endif %}
         </ul>
@@ -84,6 +84,8 @@
 
     <script src='/static/js/jquery.1.11.0.js'></script>    
     <script src='/static/js/bootstrap.min.js'></script> 
+    <script src='/static/js/keymaster.js'></script>
+    <script src='/static/js/jquery.selection.js'></script>
     <script src='/static/js/main.js'></script>
   </body>
 </html>

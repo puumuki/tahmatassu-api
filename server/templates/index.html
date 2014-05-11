@@ -7,14 +7,14 @@
 {% for recipe in recipes %}
   <li class="list-group-item">
   	<a href="recipe/{{ recipe.filename }}">{{ recipe.title }}</a>
-  	{% if authenticated %}
+  	{% if user.is_authenticated %}
   	<span class="remove" data-recipename="{{recipe.filename}}">&times;</span>
   	{% endif %}
   </li>
 {% endfor %}
 </ul>
 
-{% if authenticated %}
+{% if user.is_authenticated %}
 <div class="btn-group pull-right">
 	<a href="/edit"><button type="button" class="btn btn-default cancel-btn">Luo uusi</button></a>
 </div>	

@@ -32,12 +32,22 @@ def authenticate(username, password):
 	if authenticated: session['username'] = username
 	return authenticated
 		
+@app.before_request
+def before_request():
+	username = session.get('username', '_quest_')	
+	if username is '_quest_':
+		g.user = app.userstorage.get_user(username)
+	else: 
+		g.user = app.userstorage.get_quest()
+
+
+
 @app.route("/")
 def index(recipes=None):
 	if not recipes:
 		recipes = app.storage.list_titles()	
 	return render_template('index.html',
-							authenticated=is_authenticated(),
+							user=g.user,
 							nav='recipes',
 							recipes=recipes)
 
@@ -51,7 +61,7 @@ def search_page():
 @app.route("/login")
 def login_page(error=None):	
 	return render_template('login.html',
-							authenticated=is_authenticated(),
+							user=g.user,
 							history=request.args.get('history',''),
 							recipe=request.args.get('recipe',''),
 							error=error)
@@ -68,7 +78,7 @@ def edit(recipe):
 		return redirect("/recipe/"+recipe, code=302)
 
 	recipe = app.storage.load(recipe)
-	return render_template('edit.html', authenticated=is_authenticated(),
+	return render_template('edit.html', user=g.user,
 										nav='edit',
 										editurl= '/recipe/'+recipe.name.split('.')[0]+'.md',
 										filename=recipe.name.split('.')[0],
@@ -78,17 +88,17 @@ def edit(recipe):
 def recipe(recipe):
 	recipeobj = app.storage.load(recipe)
 	markdown = app.markdown.convert(recipeobj.markdown)
-	return render_template('recipe.html',authenticated=is_authenticated(),
+	return render_template('recipe.html',user=g.user,
 										 filename=recipeobj.name, 
 										 markdown=markdown)
 
 @app.route("/about")
 def about():
-	return render_template('about.html',nav='about')
+	return render_template('about.html', user=g.user, nav='about')
 
 @app.route("/api")
 def api_page():
-	return render_template('api.html', nav='api')
+	return render_template('api.html', user=g.user, nav='api')
 
 
 @app.route("/api/login", methods=['POST'])
@@ -108,7 +118,8 @@ def login():
 @app.route("/logout", methods=['POST','GET'])
 def logout():
 	session.pop('username',None)
-	return redirect('/')
+	page = '/'+request.form.get('history','/')
+	return redirect(page, code=302)
 
 @app.route("/api/recipe/<recipe>", methods=['DELETE'])
 def delete(recipe):
