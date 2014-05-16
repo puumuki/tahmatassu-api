@@ -58,8 +58,11 @@ class RecipeStorage:
 		files =  self.list()
 
 		for file_name in files:
-			with codecs.open(os.path.join( self.directory, file_name ), "r", "utf-8") as f:				
-				names.append(FileAndTitle(file_name, f.readline()))
+			try:
+				with codecs.open(os.path.join( self.directory, file_name ), "r", "utf-8") as f:				
+					names.append(FileAndTitle(file_name, f.readline()))
+			except UnicodeDecodeError:
+				print("UnicodeDecodeError on %s file, skipping the file")
 
 		return self._sort_by_title(names)
 
