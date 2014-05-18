@@ -68,7 +68,8 @@ def login_page(error=None):
 
 @app.route("/edit")
 def create_new():		
-	return render_template('edit.html', nav='edit', 
+	return render_template('edit.html', user=g.user,
+										nav='edit', 
 										editurl='/', 
 										markdown='')
 
