@@ -14,16 +14,15 @@
 		<span class="input-group-addon">.md</span>
 	</div>
 
-	<!-- Textarea -->
-<div class="control-group">		
-<textarea class="fullsize-textarea" id="textarea" name="recipe-markdown" autofocus>
+<br />
+
+<textarea id="editor" class="form-control" rows="10">
 {% autoescape off%}{{markdown}}{% endautoescape %}
 </textarea>
-</div>	
 
 	<div class="btn-group pull-right">
 		<a href="{{editurl}}">
-			<button type="button" class="btn btn-default cancel-btn">Peruuta</button>
+			<button type="button" class="btn btn-default cancel-btn">Palaa</button>
 		</a>
   		<a><button type="button" class="btn btn-default save-btn">Tallenna</button></a>
 	</div>	

@@ -125,7 +125,7 @@
 
 	$(function() {
 		Editor.init();
-
+		$("textarea#editor").pagedownBootstrap();
 		
 	});
 }());
