@@ -18,6 +18,7 @@ pip-log.txt
 nosetests.xml
 *.pyc
 *.*~
+*.bat
 MANIFEST~
 
 users.json
