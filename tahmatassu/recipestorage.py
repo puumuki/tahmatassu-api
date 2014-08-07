@@ -1,6 +1,7 @@
  #!/usr/bin/python
  # -*- coding: utf-8 -*-
 import os, time, shutil
+import codecs
 from recipe import Recipe
 from os import listdir
 from os.path import isfile, join
@@ -21,9 +22,15 @@ recipes.
 """
 class RecipeStorage:
 
-	def __init__(self, directory, backup=False):
+	def __init__(self, directory, backup=False, logger=None):
 		self.backup = backup
 		self.directory = directory;
+
+	def _log(self,text):
+		if self._logger:
+			self._logger(text)
+		else:
+			print(text)
 
 	def _filter_titles(self, files_and_titles):
 		return map((lambda o: o.title), files_and_titles)
@@ -59,10 +66,11 @@ class RecipeStorage:
 
 		for file_name in files:
 			try:
-				with codecs.open(os.path.join( self.directory, file_name ), "r", "utf-8") as f:				
-					names.append(FileAndTitle(file_name, f.readline()))
-			except UnicodeDecodeError:
-				print("UnicodeDecodeError on %s file, skipping the file")
+				with open(os.path.join( self.directory, file_name ), "r") as f:				
+					title = f.readline().decode("utf-8-sig")					
+					names.append(FileAndTitle(file_name, title))
+			except UnicodeDecodeError as er:				
+				self._log("UnicodeDecodeError on %s file, skipping the file")
 
 		return self._sort_by_title(names)
 

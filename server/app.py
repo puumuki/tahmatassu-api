@@ -25,6 +25,12 @@ from tahmatassu.recipestorage import RecipeStorage
 
 import server_config
 
+def create_console_logger_handler():
+	ch = logging.StreamHandler()
+	ch.setLevel(logging.DEBUG)
+	ch.setFormatter(Formatter('%(asctime)s %(levelname)s %(message)s [in %(pathname)s:%(lineno)d]'))
+	return ch
+
 def create_logging_handler(config):
 	logging_file = os.path.join( os.path.dirname(__file__), 'logs', 'tahmatassu.log' )   
 	file_handler = RotatingFileHandler(logging_file, 
@@ -62,13 +68,18 @@ def load_users(userstorage):
 app = Flask(__name__)
 app.config.from_object(server_config)
 
+app.logger.handlers = []
+
 app.logger.addHandler(create_logging_handler(app.config))
+app.logger.addHandler(create_console_logger_handler())
 
 app.userstorage = UserStorage()
 load_users(app.userstorage)
 
 app.markdown = Markdown()
-app.storage = RecipeStorage(directory=app.config['RECIPE_DIRECTORY'] , backup=True)
+app.storage = RecipeStorage(directory=app.config['RECIPE_DIRECTORY'], 
+							backup=True, 
+							logger=app.logger.info)
 
 #Set server language response language
 language(app.config['LANGUAGE'] if 'LANGUAGE' in app.config else 'fi')

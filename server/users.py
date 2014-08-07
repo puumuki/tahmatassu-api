@@ -28,9 +28,6 @@ class UserStorage:
 	def __init__(self):
 		self.users = {}		
 			
-	def get_quest(self):
-		return User({'username':'Vieras'})
-
 	def has_user(self, username):
 		return username in self.users
 

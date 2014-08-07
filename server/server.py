@@ -28,19 +28,14 @@ def response(statuscode, key, arguments=None):
 def authenticate(username, password):	
 	user = app.userstorage.get_user(username)
 	authenticated = (user and user.authenticate(password))
-	app.logger.info(user)
+	app.logger.info("User %s sign in" % (username,))
 	if authenticated: session['username'] = username
 	return authenticated
 		
 @app.before_request
 def before_request():
-	username = session.get('username', '_quest_')	
-	if username is '_quest_':
-		g.user = app.userstorage.get_user(username)
-	else: 
-		g.user = app.userstorage.get_quest()
-
-
+	username = session.get('username', '_quest_')		
+	g.user = app.userstorage.get_user(username)
 
 @app.route("/")
 def index(recipes=None):
@@ -117,9 +112,10 @@ def login():
 		return login_page(error=True)
 	
 @app.route("/logout", methods=['POST','GET'])
-def logout():
+def logout():	
+	if g.user: app.logger.info("User %s sign out " % (g.user.username,))
 	session.pop('username',None)
-	page = '/'+request.form.get('history','/')
+	page = '/'+request.form.get('history','/')	
 	return redirect(page, code=302)
 
 @app.route("/api/recipe/<recipe>", methods=['DELETE'])
