@@ -22,7 +22,7 @@ from logging.handlers import RotatingFileHandler
 from logging import Formatter
 
 from tahmatassu.recipestorage import RecipeStorage
-
+from middlewares import StreamConsumingMiddleware
 import server_config
 
 def create_console_logger_handler():
@@ -68,6 +68,8 @@ def load_users(userstorage):
 app = Flask(__name__)
 app.config.from_object(server_config)
 
+app.wsgi_app = StreamConsumingMiddleware(app.wsgi_app)
+
 app.logger.handlers = []
 
 app.logger.addHandler(create_logging_handler(app.config))
@@ -80,6 +82,18 @@ app.markdown = Markdown()
 app.storage = RecipeStorage(directory=app.config['RECIPE_DIRECTORY'], 
 							backup=True, 
 							logger=app.logger.info)
+
+#Jinja Context Processor
+@app.context_processor
+def inject_template_variables():
+    return dict(base_path=app.config['BASE_PATH'], upload_directory=app.config['UPLOAD_DIRECTORY'])
+
+@app.context_processor
+def file_size_context_processor():
+    def file_size( base_url, file_name ):    	    	
+    	return os.stat(os.path.join(base_url, file_name)).st_size / 1024
+    return dict(file_size=file_size)
+
 
 #Set server language response language
 language(app.config['LANGUAGE'] if 'LANGUAGE' in app.config else 'fi')

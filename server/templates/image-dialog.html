@@ -1,0 +1,41 @@
+<!-- Modal -->
+<div class="modal fade" id="image-dialog" tabindex="-1" role="dialog" aria-labelledby="Kuvat" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Kuvat</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <td></td>
+              <td>Nimi</td>
+              <td>Koko</td>
+            </tr>
+          </thead>
+          <tbody>
+          {% for file in files %}
+            <tr>
+              <td>
+                <img class="small-image img-circle" src="{{base_url}}/{{file}}" width="32" height="32"></img>
+              </td>
+              <td class="text-middle">
+                <span class="image" data-imageurl="{{base_url}}/{{file}}">{{base_url}}/{{file}}</span>  
+              </td>
+              <td class="text-middle">
+                <span>{{ file_size(upload_directory, file) }}</span> <span class="unit text-right">KiB</span>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Peruuta</button>
+        <button type="button" class="btn btn-primary">Poimi</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -31,6 +31,15 @@ body {
 	float:left;
 }
 
+.small-image {
+	margin-right: 25px;
+}
+
+.text-middle {
+	vertical-align: middle !important;
+}
+	
+
 @media print
 {     	
 	a[href]:after { display:none; }  	
@@ -58,4 +67,18 @@ body {
 .remove:hover {
 	color: blue;
 	cursor: pointer;
-};
+}
+
+.pagination {
+	margin: 0px;
+}
+
+.paginate_button {
+	font-size: 13px;
+	margin: 0px !important;
+	padding: 0px !important;
+}
+
+.image-primary {
+	border: solid 4px #428BCA;
+}

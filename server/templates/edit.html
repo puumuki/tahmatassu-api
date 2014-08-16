@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% set nav='recipes' %}
 {% block title %}Tahmatassujen reseptit{% endblock %}
 {% block history %}edit&recipe={{filename}}{% endblock %}
 {% block content %}
@@ -22,14 +22,13 @@
 	  		</a>
 		</div>	
 	</div>
-
-
 <br />
 
 <textarea id="editor" class="form-control" rows="10">
 {% autoescape off%}{{markdown}}{% endautoescape %}
 </textarea>
 
+{% include 'image-dialog.html' %}
 
 </div>
 {% endblock %}

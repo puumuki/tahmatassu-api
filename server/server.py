@@ -17,6 +17,14 @@ from tahmatassu.tassuexception import TassuException
 
 from localization.utils import msg
 
+from werkzeug.utils import secure_filename
+from werkzeug.wrappers import BaseRequest
+from werkzeug.wsgi import responder
+from werkzeug.exceptions import RequestEntityTooLarge
+
+import file_utils
+from pagination import Pagination
+
 from app import app
 
 def is_authenticated():
@@ -42,8 +50,7 @@ def index(recipes=None):
 	if not recipes:
 		recipes = app.storage.list_titles()	
 	return render_template('index.html',
-							user=g.user,
-							nav='recipes',
+							user=g.user,							
 							recipes=recipes)
 
 @app.route("/search", methods=['GET'])
@@ -63,8 +70,7 @@ def login_page(error=None):
 
 @app.route("/edit")
 def create_new():		
-	return render_template('edit.html', user=g.user,
-										nav='edit', 
+	return render_template('edit.html', user=g.user,										 
 										editurl='/', 
 										markdown='')
 
@@ -74,11 +80,14 @@ def edit(recipe):
 		return redirect("/recipe/"+recipe, code=302)
 
 	recipe = app.storage.load(recipe)
+
 	return render_template('edit.html', user=g.user,
 										nav='edit',
 										editurl= '/recipe/'+recipe.name.split('.')[0]+'.md',
 										filename=recipe.name.split('.')[0],
-										markdown=recipe.markdown)
+										markdown=recipe.markdown,
+										base_url=app.config.get('BASE_URL'),
+										files=file_utils.list_allowed_files())
 
 @app.route("/recipe/<recipe>")
 def recipe(recipe):
@@ -96,6 +105,26 @@ def about():
 def api_page():
 	return render_template('api.html', user=g.user, nav='api')
 
+@app.route('/upload', methods=['GET','POST'])
+def upload_file():	
+
+	if not is_authenticated():
+		return redirect('/')
+
+	if request.method == 'POST':
+		file = request.files['file']       
+
+		if file and file_utils.allowed_file(file.filename):
+			filename = secure_filename(file.filename)			
+			app.logger.debug(os.path.join(app.config.get('UPLOAD_DIRECTORY'), filename))
+			file.save(os.path.join(app.config.get('UPLOAD_DIRECTORY'), filename))
+			app.logger.debug("Saved")
+
+	files = file_utils.list_allowed_files()	
+	return render_template('upload.html', user=g.user, 
+								  files=files, 
+								  error=request.args.get('error',''),
+								  base_url=app.config.get('BASE_URL'))
 
 @app.route("/api/login", methods=['POST'])
 def login():	
@@ -173,6 +202,11 @@ def list_recipes():
 def page_not_found(error):
 	app.logger.error(error)	
 	return response(key='resource.not.found', statuscode=httpcode.NOT_FOUND)
+
+@app.errorhandler(413)
+def upload_error(error):
+	app.logger.error(error)	
+	return redirect('/upload?error=true')
 
 if __name__ == "__main__":
 	app.run(host=app.config.get('HOST', '0.0.0.0'),

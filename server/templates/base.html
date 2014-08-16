@@ -17,10 +17,13 @@
 
       <link rel="stylesheet" href="/static/css/font-awesome.min.css">
 
+      <link rel="stylesheet" href="/static/css/datatable.css"/>
+
       <link rel="stylesheet" href="/static/css/normalize.min.css">
       <link rel="stylesheet" href="/static/css/main.style.css">
 
       <link rel="stylesheet" href="/static/css/print.style.css"/>
+
 
       <link rel="icon" href="/static/icons/touch-icon-iphone.png" type="image/png" />
       <link rel="apple-touch-icon" href="static/icons/touch-icon-iphone.png" />
@@ -43,7 +46,10 @@
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">          
-          <li class="{% if nav == "recipes" %}active{% endif %}"><a href="/">Reseptit</a></li>            
+          <li class="{% if nav == "recipes" %}active{% endif %}"><a href="/">Reseptit</a></li>
+          {% if user %}            
+          <li class="{% if nav == "images" %}active{% endif %}" ><a href="/upload">Kuvat</a></li>
+          {% endif %}
           <li class="{% if nav == "about" %}active{% endif %}" ><a href="/about">Info</a></li>        
         </ul>
 
@@ -90,9 +96,12 @@
 
     <script src='/static/js/jquery.1.11.0.js'></script>    
     <script src='/static/js/bootstrap.min.js'></script> 
-    <script src='/static/js/keymaster.js'></script>
+    <script src='/static/js/bootstrap.file-input.js'></script> 
+    <script src='/static/js/keymaster.js'></script>    
     <script src='/static/js/jquery.selection.js'></script>    
     <script src='/static/js/jquery.pagedown-bootstrap.combined.min.js'></script>
+    <script src='/static/js/datatables.min.js'></script>
+    <script src='/static/js/datatables.bootsrap.js'></script>    
     <script src='/static/js/main.js'></script>
   </body>
 </html>
