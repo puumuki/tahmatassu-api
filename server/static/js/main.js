@@ -146,12 +146,23 @@
 				return $(el).hasClass('text-primary');
 
 			}).map(function(i, el) {
-				return $(el).data('imageurl');
+				return '![](' + $(el).data('imageurl') +')';
 			});		
 
-			console.log($.makeArray(images));
+			var images = $.makeArray(images).join('\n');		
+			var oldText = Editor.ui.textarea.val();
+			
+			var newText = oldText.substring(0, Editor.ui.textarea.prop('selectionStart'));
+			newText += images;
+			newText += oldText.substring(Editor.ui.textarea.prop('selectionEnd'), oldText.length-1);
+
+			Editor.ui.textarea.val(newText);
+			Editor.ui.textarea.data('markdowneditor').refreshPreview();
+
+			imageDialogEl.modal('hide');
 		});
 
+		//Init-tablesorter
 		var language = {
 		    "emptyTable":     "Kuvia ei ole saatavilla",
 		    "info":           "Näytetään _START_ - _END_  / _TOTAL_ kuvasta",
@@ -178,7 +189,7 @@
 
  		$('#image-dialog table').dataTable({
  			"language":language
-        });        	
+        });
 	}
 
 	$(function() {
@@ -187,7 +198,6 @@
 
 		replaceImageDialogBtn();
 		imageDialog();
-
 
 		$('input[type=file]').bootstrapFileInput();		
 	});
