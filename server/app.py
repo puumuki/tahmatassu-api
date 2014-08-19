@@ -7,6 +7,8 @@ from flask import url_for
 from flask import g
 from flask import redirect
 
+from flask.ext.compress import Compress
+
 from markdown2 import Markdown
 
 from users import UserStorage
@@ -78,7 +80,12 @@ app.logger.addHandler(create_console_logger_handler())
 app.userstorage = UserStorage()
 load_users(app.userstorage)
 
+#Enables GZIP compression
+compressor = Compress()
+compressor.init_app(app)
+
 app.markdown = Markdown()
+
 app.storage = RecipeStorage(directory=app.config['RECIPE_DIRECTORY'], 
 							backup=True, 
 							logger=app.logger.info)
