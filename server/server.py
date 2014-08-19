@@ -23,7 +23,6 @@ from werkzeug.wsgi import responder
 from werkzeug.exceptions import RequestEntityTooLarge
 
 import file_utils
-from pagination import Pagination
 
 from app import app
 
