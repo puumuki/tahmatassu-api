@@ -4,7 +4,6 @@ from server import app
 from flask import Flask
 import cherrypy
 from paste.translogger import TransLogger
-from signal import signal, SIGINT
 
 def run_server():
     # Enable WSGI access logging via Paste
