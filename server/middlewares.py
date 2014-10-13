@@ -6,9 +6,11 @@ class StreamConsumingMiddleware(object):
         self.app = app
 
     def __call__(self, environ, start_response):
+        content_length = environ.get('CONTENT_LENGTH',0)
+        content_length = 0 if content_length is '' else content_length
 
         stream = LimitedStream(environ.get('wsgi.input'),
-                               int(environ.get('CONTENT_LENGTH',0)))
+                               int(content_length))
         environ['wsgi.input'] = stream
         app_iter = self.app(environ, start_response)
         try:

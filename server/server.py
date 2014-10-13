@@ -90,11 +90,15 @@ def edit(recipe):
 
 @app.route("/recipe/<recipe>")
 def recipe(recipe):
-	recipeobj = app.storage.load(recipe)
-	markdown = app.markdown.convert(recipeobj.markdown)
-	return render_template('recipe.html',user=g.user,
-										 filename=recipeobj.name, 
-										 markdown=markdown)
+	try:
+		recipeobj = app.storage.load(recipe)
+		markdown = app.markdown.convert(recipeobj.markdown)
+		return render_template('recipe.html',user=g.user,
+											 filename=recipeobj.name, 
+											 markdown=markdown)
+	except TassuException as error:
+		app.logger.info("Recipe not found")
+		return page_not_found(error)
 
 @app.route("/about")
 def about():
@@ -199,8 +203,9 @@ def list_recipes():
 
 @app.errorhandler(404)
 def page_not_found(error):
-	app.logger.error(error)	
-	return response(key='resource.not.found', statuscode=httpcode.NOT_FOUND)
+	return render_template('page_not_found.html', 
+							user=g.user, 
+							statuscode=httpcode.NOT_FOUND)
 
 @app.errorhandler(413)
 def upload_error(error):
