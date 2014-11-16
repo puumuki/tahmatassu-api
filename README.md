@@ -1,10 +1,12 @@
 Tahmatassujen reseptikirja 2.0
 ==============================
 
-+ 2 Pyyttonia
-+ 1 Javascript
++ Pyyttonia
+  + Flask, Markdown2
++ Ripaus Javascript
 + Ripaus HTML5
 + Ripaus CSS
++ Bootstrap
 
 Tahmatassujen reseptikirja on tarkoitettu jokapäiväiseen kotikäyttöön. Kaiken ikäisille ja kaiken karvaisille heeboille.
 
@@ -15,15 +17,22 @@ Olen itse ajanut sovellusta Python 2.7 versiolla, Raspberry PI:lläni, jossa py�
 screessä. En ole vielä raaskiutunut opistekemaan sen parempia hostaus mahdollisuuksia, tiedän
 että Flask-sovelluksen saa pyörimään monessa sovelluspalvelinkehyksessä. Täytyisi varmaan tutustua aiheeseen :)
 
-Asentaminen:
+Asentaminen
+===========
+
+Tarvitset esiasennettuna python 2.7, GIT:n versionhallintaa varten, joudut asennuksen aika kloonaamaan repositorion.
 
 Mene projektin hakemistoon ja asenna tahmatassu-moduuli järjestelmään:
 
-> python setup.py install
+> python tahmatassu-server/setup.py install
 
 Asenna flask webserveri kirjasto
 
 > pip install flask
+
+Asennetaan vielä flask-compress, joka pakkaa lähetettävän tiedon kivasti
+
+> pip install flask-compress
 
 Asenna markdown2 moduuli järjestelmään
 

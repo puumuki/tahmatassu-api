@@ -15,8 +15,6 @@
 					$('#modal-dialog').modal('hide');
 				} 
 			});
-
-
 		});
 	});
 
@@ -30,6 +28,8 @@
 			saveBtn : $('#editor .save-btn')
 		},
 
+
+
 		init : function() {
 			this.el = '#editor';
 			
@@ -39,10 +39,10 @@
 				that._onClickSaveBtn(e);
 			});
 
-			if(this.ui.filename.length > 0 && this.ui.filename.val().length == 0) {
-				this._bindFileNameChange();	
-			}
+			this._fileNameEditable = this.ui.filename.length > 0 && this.ui.filename.val().length == 0;
 
+			this._bindFileNameChange();	
+			
 			//Bind sortcut keys
 			key('ctrl+s', function(){  
 				that.save();
@@ -75,11 +75,14 @@
 		},
 
 		_bindFileNameChange : function() {
-			var that = this;
-			this.ui.textarea.bind('input propertychange', function() {
-				var filename = $(this).val().split('\n')[0];
-				that.ui.filename.val(filename);
-			});
+			this.ui.textarea.bind('input propertychange', _.bind(function(event) {
+				if(!this._fileNameEditable) {
+					return;
+				}
+
+				var filename = $(event.currentTarget).val().split('\n')[0];
+				this.ui.filename.val(filename);
+			}, this));
 		},
 
 		_onClickCancelBtn : function(e) {
@@ -99,7 +102,12 @@
 				type: 'POST',
 				data:{name:filename+this.fileEnding, 
 					  markdown:markdown}, 
-				onFailure:function() {that.ui.saveBtn.button('reset')}
+				onFailure:function() {
+					that.ui.saveBtn.button('reset')
+				}, 
+				onSuccess: _.bind(function() {
+					this._fileNameEditable = false;
+				}, this)
 			});	
 		},
 

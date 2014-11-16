@@ -60,6 +60,26 @@ class TestRecipeStorage(unittest.TestCase):
 		self.assertEqual(recipe_names[2], 'Pannukakku.md')
 		self.assertEqual(recipe_names[3], 'Tortilla.md')
 
+	def test_load_all(self):
+		storage = RecipeStorage(TEST_DIRECTORY);
+
+		storage.save(Recipe('MustikkaPiirakka.md', 'Mustikka\n'))
+		storage.save(Recipe('Tortilla.md', 'Tortilla\n'))
+		storage.save(Recipe('BologneseKastike.md', 'Bolognesekastike\n'))
+		storage.save(Recipe('Pannukakku.md', 'Artillery'))
+		storage.save(Recipe('Artillery.md', 'Pannukakku'))
+
+		recipes = storage.load_all()
+
+		self.assertEqual(len(recipes), 5, 'There sould be four recipes stored to directory')
+
+		#In alphabetically sorted order, not by the file name but by the title
+		self.assertEqual(recipes[0].name, 'Pannukakku.md')
+		self.assertEqual(recipes[1].name, 'BologneseKastike.md')
+		self.assertEqual(recipes[2].name, 'MustikkaPiirakka.md')
+		self.assertEqual(recipes[3].name, 'Artillery.md')
+		self.assertEqual(recipes[4].name, 'Tortilla.md')
+
 	def test_loading_recipe(self):
 		storage = RecipeStorage(TEST_DIRECTORY);
 

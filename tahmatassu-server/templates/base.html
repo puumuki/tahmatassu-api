@@ -42,15 +42,14 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a href="/"><img class="pawlogo" src="/static/img/paw.png" /></a>      
+        <a href="/about"><img class="pawlogo" src="/static/img/paw.png" /></a>      
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">          
           <li class="{% if nav == "recipes" %}active{% endif %}"><a href="/">Reseptit</a></li>
           {% if user %}            
           <li class="{% if nav == "images" %}active{% endif %}" ><a href="/upload">Kuvat</a></li>
-          {% endif %}
-          <li class="{% if nav == "about" %}active{% endif %}" ><a href="/about">Info</a></li>        
+          {% endif %}     
         </ul>
 
         <form class="navbar-form navbar-left" role="search" action="/search">
@@ -94,6 +93,7 @@
     </div><!-- /.modal -->
 
 
+    <script src='/static/js/underscore.min.js'></script>
     <script src='/static/js/jquery.1.11.0.js'></script>    
     <script src='/static/js/bootstrap.min.js'></script> 
     <script src='/static/js/bootstrap.file-input.js'></script> 

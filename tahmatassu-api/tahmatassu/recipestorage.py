@@ -75,6 +75,29 @@ class RecipeStorage:
 		return self._sort_by_title(names)
 
 	"""
+	Load all recipes from disk and return them in a array of Recipe objects
+	"""	
+	def load_all(self):
+		try:
+			recipes = []
+
+			files_and_titles = self.list_titles()
+			files_and_titles = self._sort_by_title(files_and_titles)
+
+			for ft in files_and_titles:
+				recipe = self.load(ft.filename)
+				recipes.append(recipe)
+
+			return recipes
+
+		except IOError as error:
+			msg = 'Could not open file from: %s/%s ' % (self.directory, name)
+			raise TassuException(msg, error)
+		except OSError as error:
+			msg = 'Could not open file from: %s/%s ' % (self.directory, name)
+			raise TassuException(msg, error)
+
+	"""
 	Load a recipe from the storage, return a recipe object. If IOError or OSError is raises
 	it is wrapped around TassuException and raised.	
 	"""

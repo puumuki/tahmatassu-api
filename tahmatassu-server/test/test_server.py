@@ -2,9 +2,9 @@
  # -*- coding: utf-8 -*-
 import unittest, os, sys, shutil
 
-from server.localization.utils import language 
-from server.localization.utils import msg
-from server import server
+from localization.utils import language 
+from localization.utils import msg
+import server
 
 class TestServer(unittest.TestCase):
 

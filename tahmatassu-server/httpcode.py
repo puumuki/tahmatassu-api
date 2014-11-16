@@ -1,3 +1,4 @@
+#HTTP status codes
 OK = 200
 UNAUTHORIZED = 401
 ACCESS_DENIED = 403

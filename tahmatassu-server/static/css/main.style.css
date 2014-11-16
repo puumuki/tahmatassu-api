@@ -1,11 +1,11 @@
 body {
   min-height: 2000px;
   padding-top: 70px;
-  background: url('../img/crossword.png') repeat;
+  background: url('../img/crossword.png') repeat;  
 }
 
 .main {
-    font-family:Georgia, Palatino, serif;    
+    font-family: "Palatino Linotype","Book Antiqua","Palatino","serif";
 }
 
 .main ul {
