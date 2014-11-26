@@ -7,6 +7,13 @@ import re
 DATEFORMAT = '%Y-%m-%d %H:%M:%S'
 
 """
+Array of recipe objects to json
+"""
+def recipes_to_json(recipes):
+	data = map(lambda recipe: recipe.to_dictionary(), recipes)
+	return json.dumps(data, ensure_ascii=False)
+
+"""
 Recipe model object
 """
 class Recipe:
@@ -38,11 +45,17 @@ class Recipe:
 		return match != None		
 
 	"""
+	Return recipe as a dictionary
+	"""
+	def to_dictionary(self):
+		return {'name':self.name,
+				'markdown':self.markdown,
+				'created':self.created.strftime(DATEFORMAT),
+				'modified':self.modified.strftime(DATEFORMAT)}
+
+	"""
 	Return recipe object as JSON string
 	"""
 	def to_json(self):
-		return json.dumps({'name':self.name,
-							'markdown':self.markdown,
-							'created':self.created.strftime(DATEFORMAT),
-							'modified':self.modified.strftime(DATEFORMAT)},
+		return json.dumps(self.to_dictionary(),
 							ensure_ascii=False)

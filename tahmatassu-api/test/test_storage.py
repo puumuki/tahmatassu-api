@@ -2,6 +2,7 @@
  # -*- coding: utf-8 -*-
 import unittest, os, sys, shutil
 
+from tahmatassu.recipe import recipes_to_json
 from tahmatassu.recipe import Recipe
 from tahmatassu.recipestorage import RecipeStorage
 from tahmatassu.tassuexception import TassuException
@@ -143,6 +144,16 @@ class TestRecipeStorage(unittest.TestCase):
 		storage.save(recipe)		
 		storage.save(recipe)
 		self.assertEqual(2, len(os.listdir(TEST_DIRECTORY)))
+
+	def test_message_list_to_json(self):
+		recipes = []
+		recipes.append(Recipe('A.md', MARKDOWN))
+		recipes.append(Recipe('B.md', MARKDOWN))
+		recipes.append(Recipe('C.md', MARKDOWN))
+		recipes.append(Recipe('D.md', MARKDOWN))
+		recipes.append(Recipe('E.md', MARKDOWN))
+		json = recipes_to_json(recipes)
+		self.assertIsNotNone(json)
 
 if __name__ == '__main__':
 	unittest.main()

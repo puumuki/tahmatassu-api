@@ -12,6 +12,7 @@ from flask import redirect
 import hashlib, json, httpcode, os, logging
 
 from tahmatassu.recipe import Recipe
+from tahmatassu.recipe import recipes_to_json
 from tahmatassu.recipestorage import RecipeStorage
 from tahmatassu.tassuexception import TassuException
 
@@ -196,10 +197,29 @@ def put_recipe():
 	except ValueError as error:
 		app.logger.error(error)
 		return response(key='request.is.expecting.json', statuscode=httpcode.NOT_AVAILABLE)
-		
+	
 @app.route("/api/recipes",  methods=['GET'])
-def list_recipes():
-	return json.dumps(app.storage.list())
+def list_recipes_only_names():
+	try:
+		return json.dumps(app.storage.list())
+	except TassuException as error:
+		app.logger.error(error)
+		return json.dumps([])
+	
+
+@app.route("/api/v2/recipes",  methods=['GET'])
+def list_recipes_with_content():
+	try:
+		recipes=[]
+		recipe_names = app.storage.list()
+		for recipe_name in recipe_names:
+			recipes.append(app.storage.load(recipe_name))
+		return recipes_to_json(recipes)
+	except TassuException as error:
+		app.logger.error(error)
+		return json.dumps([])
+	
+	
 
 @app.errorhandler(404)
 def page_not_found(error):
