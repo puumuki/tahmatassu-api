@@ -9,10 +9,9 @@ setup(
 	description='Tahmatassujen Resepetikirjan Application Interface',
 	author='Teemu Puukko',
 	author_email='teemuki@gmail.com',
-	packages=['tahmatassu','server'],
+	packages=['tahmatassu'],
 	license='LICENSE.txt',
 	long_description=open('README.md').read(),
-	install_requires=[],
 	keywords=['webapp','recipe'],
 	scripts=glob.glob('bin/*.py')
 )
