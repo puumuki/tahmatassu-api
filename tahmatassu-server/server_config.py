@@ -25,6 +25,7 @@ ENGINE_AUTO_RELOAD = True
 #Log Server Output to Screen 
 LOG_SCREEN = True
 
+#Base URL-that is used to locate the static content
 BASE_URL = "http://localhost:8080/static/img"
 
 #Directory where images and other stuff can be loaded, not implementet touch..
@@ -32,6 +33,7 @@ UPLOAD_DIRECTORY = os.path.join( BASE_PATH, 'static', 'img')
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
+#Size of maximun file size for uploaded file
 MAX_CONTENT_LENGTH = 1024 * 1024
 
 #Directory where recipes are stored

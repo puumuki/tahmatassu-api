@@ -1,5 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+"""
+Tahmatassu Web Server
+~~~~~~~~~~~~~~~~~~~~~
+Main business logic for a web server.
+:copyright: (c) 2014 by Teemu Puukko.
+:license: MIT, see LICENSE for more details.
+"""
 from flask import Flask
 from flask import request
 from flask import render_template
@@ -27,21 +34,46 @@ import file_utils
 
 from app import app
 
+
 def is_authenticated():
+	"""
+	Test is user authenticated.
+	:returns: True if user is authenticated False otherwise
+	"""
 	return 'username' in session and session['username'] != None
 
+
 def response(statuscode, key, arguments=None):
+	"""
+	JSON-response helper
+	:param statuscode: http statuscode
+	:param key: localization key
+	:param arguments:
+	:returns: reponse JSON 
+	"""
 	return json.dumps(msg(key, arguments), ensure_ascii=False), statuscode
 
 def authenticate(username, password):	
+	"""
+	Autheticate user with username and password using UserStorage.
+	If user is authenticated marks username to session object.
+	:param username: User username
+	:param password: User password
+	:returns: True if authenticated otherwise False
+	"""
 	user = app.userstorage.get_user(username)
 	authenticated = (user and user.authenticate(password))
 	app.logger.info("User %s sign in" % (username,))
 	if authenticated: session['username'] = username
 	return authenticated
+
 		
 @app.before_request
 def before_request():
+	"""
+	Executed before each HTTP-request, sets User object to
+	request _g_ object if user is authenticated.
+	"""
 	username = session.get('username', '_quest_')		
 	g.user = app.userstorage.get_user(username)
 
@@ -72,7 +104,9 @@ def login_page(error=None):
 def create_new():		
 	return render_template('edit.html', user=g.user,										 
 										editurl='/', 
-										markdown='')
+										markdown='',
+										base_url=app.config.get('BASE_URL'),
+										files=file_utils.list_allowed_files())
 
 @app.route("/edit/<recipe>")
 def edit(recipe):
@@ -219,16 +253,21 @@ def list_recipes_with_content():
 		app.logger.error(error)
 		return json.dumps([])
 	
-	
 
 @app.errorhandler(404)
 def page_not_found(error):
+	"""
+	Error handler for when page is not found.
+	"""
 	return render_template('page_not_found.html', 
 							user=g.user, 
 							statuscode=httpcode.NOT_FOUND)
 
 @app.errorhandler(413)
 def upload_error(error):
+	"""
+	Error handler for file upload situations.
+	"""
 	app.logger.error(error)	
 	return redirect('/upload?error=true')
 

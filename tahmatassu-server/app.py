@@ -1,3 +1,10 @@
+"""
+Tahmatassu Web Server
+~~~~~~~~~~~~~~~~~~~~~
+Web server initialization is done in this module
+:copyright: (c) 2014 by Teemu Puukko.
+:license: MIT, see LICENSE for more details.
+"""
 from flask import Flask
 from flask import request
 from flask import render_template
@@ -84,6 +91,7 @@ load_users(app.userstorage)
 compressor = Compress()
 compressor.init_app(app)
 
+#Expose markdown trough application object
 app.markdown = Markdown()
 
 app.storage = RecipeStorage(directory=app.config['RECIPE_DIRECTORY'], 

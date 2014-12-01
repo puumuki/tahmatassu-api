@@ -1,5 +1,13 @@
 #!/usr/bin/env python
-
+# -*- coding: utf-8 -*-
+"""
+Tahmatassu Web Server
+~~~~~~~~~~~~~~~~~~~~~
+CherryPy run script for Tahmatassu Web Server. 
+Simple and easy way to run tahmatassu in production.
+:copyright: (c) 2014 by Teemu Puukko.
+:license: MIT, see LICENSE for more details.
+"""
 from server import app
 from flask import Flask
 import cherrypy
