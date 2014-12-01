@@ -26,4 +26,7 @@ server/users.py
 server/server_config.py
 *.sublime-project
 *.sublime-workspace
-
+_build/*
+conf.py
+Makefile
+index.py
