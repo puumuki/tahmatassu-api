@@ -9,14 +9,18 @@ from os import listdir
 from os.path import isfile, join
 from app import app
 
+def file_suffix(filename):
+	parts = filename.rsplit('.', 1)
+	return parts[1].lower() if len(parts) > 1 else ''
+
 def allowed_file(filename):
 	"""
 	Test is file type supported, testing relays filename suffix
 	:param filename
 	:return True is file type is supported otherwise False
 	"""
-	return '.' in filename and filename.rsplit('.', 1)[1] in app.config.get('ALLOWED_EXTENSIONS')
-
+	return '.' in filename and file_suffix(filename) in app.config.get('ALLOWED_EXTENSIONS')
+	
 def list_allowed_files():
 	"""
 	List files allowed files from UPLOAD_DIRECTORY, unallowed files
