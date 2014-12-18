@@ -31,6 +31,7 @@ from werkzeug.wsgi import responder
 from werkzeug.exceptions import RequestEntityTooLarge
 
 import file_utils
+import utils
 
 from app import app
 
@@ -81,9 +82,10 @@ def before_request():
 def index(recipes=None):
 	if not recipes:
 		recipes = app.storage.list_titles()	
+	recipes_dict = utils.sort_alphabetically_to_dictionary(recipes)
 	return render_template('index.html',
 							user=g.user,							
-							recipes=recipes)
+							recipes=recipes_dict)
 
 @app.route("/search", methods=['GET'])
 def search_page():

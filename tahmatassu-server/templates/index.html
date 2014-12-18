@@ -4,20 +4,25 @@
 {% block content %}
 
 <ul class="list-group recipe-list">  
-{% for recipe in recipes %}
-  <li class="list-group-item">
-  	<a href="recipe/{{ recipe.filename }}">{{ recipe.title }}</a>
-  	{% if user.is_authenticated %}
-  	<span class="remove" data-recipename="{{recipe.filename}}">&times;</span>
-  	{% endif %}
-  </li>
+{% for key, recipe_list in recipes.iteritems() %}
+    <li class="list-group-item letter">
+    {{key}}
+    </li>
+    {% for recipe in recipe_list %}
+        <li class="list-group-item">
+            <a href="recipe/{{ recipe.filename }}">{{ recipe.title }}</a>
+            {% if user.is_authenticated %}
+            <span class="remove" data-recipename="{{recipe.filename}}">&times;</span>
+            {% endif %}
+        </li>
+    {% endfor %}
 {% endfor %}
 </ul>
 
 {% if user.is_authenticated %}
 <div class="btn-group pull-right">
-	<a href="/edit"><button type="button" class="btn btn-default cancel-btn">Luo uusi</button></a>
-</div>	
+    <a href="/edit"><button type="button" class="btn btn-default cancel-btn">Luo uusi</button></a>
+</div>  
 {% endif %}
 
 {% endblock %}

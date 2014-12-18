@@ -1,3 +1,10 @@
+"""
+Tahmatassu Web Server
+~~~~~~~~~~~~~~~~~~~~~
+HTTP-status codes containing module
+:copyright: (c) 2014 by Teemu Puukko.
+:license: MIT, see LICENSE for more details.
+"""
 from werkzeug.wsgi import LimitedStream
 
 class StreamConsumingMiddleware(object):

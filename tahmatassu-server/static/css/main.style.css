@@ -82,3 +82,9 @@ body {
 .image-primary {
 	border: solid 4px #428BCA;
 }
+
+.letter {
+	font-size: 70%;
+	padding: 2px 15px;
+	background: #EEEEEE;
+}

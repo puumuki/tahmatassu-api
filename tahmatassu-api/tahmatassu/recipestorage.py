@@ -15,12 +15,14 @@ BACKUP_DATEFORMAT = '%Y-%m-%d %H_%M_%S'
 
 FileAndTitle = namedtuple('FileAndTitle', 'filename title')
 
-"""
-RecipeStorage class contains IO-operations
-for storing, loading, renaming and listing
-recipes.
-"""
+
 class RecipeStorage:
+	"""
+	RecipeStorage class contains IO-operations
+	for storing, loading, renaming and listing
+	recipes.
+	"""
+
 
 	def __init__(self, directory, backup=False, logger=None):
 		self.backup = backup
@@ -38,29 +40,29 @@ class RecipeStorage:
 	def _sort_by_title(self, files_and_titles):
 		return sorted(files_and_titles, key=attrgetter('title'))
 
-	"""
-	Return list of file names, sorted alphabetically.
-	"""
 	def list(self):			
+		"""
+		Return list of file names, sorted alphabetically.
+		"""
 		files = [ f for f in listdir(self.directory) if isfile(join(self.directory,f))]
 		files = filter(lambda filename:self._filter_rules(filename), files)
 		return sorted(files)
 
-	"""
-	Filter rules used to filter out unwanted files from listings.
-	"""
 	def _filter_rules(self,filename):
+		"""
+		Filter rules used to filter out unwanted files from listings.
+		"""
 		if filename[0] == '.': return False
 		if filename.endswith('.md') or filename.endswith('.MD'): return True
 
 	def _backup_date(self):
 		return datetime.now().strftime(BACKUP_DATEFORMAT)
 
-	"""
-	Return list of tuples containing recipe file name and recipe's titles
-	Return [(file name, title)]
-	"""
 	def list_titles(self):
+		"""
+		Return list of tuples containing recipe file name and recipe's titles
+		Return [(file name, title)]
+		"""
 		names = []
 		files =  self.list()
 
@@ -74,10 +76,10 @@ class RecipeStorage:
 
 		return self._sort_by_title(names)
 
-	"""
-	Load all recipes from disk and return them in a array of Recipe objects
-	"""	
 	def load_all(self):
+		"""
+		Load all recipes from disk and return them in a array of Recipe objects
+		"""
 		try:
 			recipes = []
 
@@ -97,11 +99,11 @@ class RecipeStorage:
 			msg = 'Could not open file from: %s/%s ' % (self.directory, name)
 			raise TassuException(msg, error)
 
-	"""
-	Load a recipe from the storage, return a recipe object. If IOError or OSError is raises
-	it is wrapped around TassuException and raised.	
-	"""
 	def load(self, name):
+		"""
+		Load a recipe from the storage, return a recipe object. If IOError or OSError is raises
+		it is wrapped around TassuException and raised.	
+		"""
 		try:
 			file_path = os.path.join(self.directory, name)			
 
@@ -123,39 +125,40 @@ class RecipeStorage:
 			msg = 'Could not open file from: %s/%s ' % (self.directory, name)
 			raise TassuException(msg, error)
 
-	"""
-	Rename recipe with given name
-	"""
+
 	def rename(self, oldname, newname ):
+		"""
+		Rename recipe with given name
+		"""
 		os.rename( self.directory + "/" +oldname, 
 				   self.directory + "/" +newname)
 
-	"""
-	Do not delete file, rename the file by adding dot as prefix to filename.
-	After that file is not anymore listed.
-	Return True if file was rename
-	"""
 	def delete(self, name):
+		"""
+		Do not delete file, rename the file by adding dot as prefix to filename.
+		After that file is not anymore listed.
+		Return True if file was rename
+		"""
 		try:
 			self.rename(name, "."+name)
 			return True
 		except OSError as error:
 			raise TassuException("Failed to delete/rename file", error)	
 	
-	"""
-	Make a backup copy from recipe, filename is stored like
-	this .old.<timestamp>.<recipname>
-	"""	
 	def backup_recipe( self, recipe ):
+		"""
+		Make a backup copy from recipe, filename is stored like
+		this .old.<timestamp>.<recipname>
+		"""
 		recipe_path = os.path.join(self.directory, recipe.name)		
 		backup_name = '.old.%s.%s' % (self._backup_date(),recipe.name)
 		copy_path = os.path.join(self.directory, backup_name)
 		shutil.copy( recipe_path, copy_path)
 
-	"""
-	Stores a recipe object to the storage.
-	"""
 	def save(self,recipe):
+		"""
+		Stores a recipe object to the storage.
+		"""
 		recipe_path = os.path.join(self.directory, recipe.name)
 
 		if self.backup and os.path.isfile(recipe_path):
@@ -164,28 +167,26 @@ class RecipeStorage:
 		with open(recipe_path, 'w') as file:
 			file.write(recipe.markdown.encode('UTF-8'))
 
-
-
-	"""
-	Make a fuzzy search to recipes titles.
-	@param {string} text search text
-	@param {int} n count of results
-	@param {int} cutoff search sensivity is value between 0 - 1
-	@return {list<FileAndTitle tuple>} 
-	"""
 	def fuzzy_search(self, text, n=3, cutoff=0.2):
+		"""
+		Make a fuzzy search to recipes titles.
+		@param {string} text search text
+		@param {int} n count of results
+		@param {int} cutoff search sensivity is value between 0 - 1
+		@return {list<FileAndTitle tuple>} 
+		"""
 		files_and_titles = self.list_titles()
 		titles = self._filter_titles(files_and_titles)
 		titles = difflib.get_close_matches(text, titles, n=n, cutoff=cutoff)
 		files_and_titles = filter(lambda o: o.title in titles, files_and_titles)
 		return self._sort_by_title(files_and_titles)
-	
-	"""
-	Make a wildcard search to recipes titles.
-	@param {string} text search text
-	@return {list<FileAndTitle tuple>} containing recipes and names
-	"""		
+		
 	def wildcard_search(self, text):
+		"""
+		Make a wildcard search to recipes titles.
+		@param {string} text search text
+		@return {list<FileAndTitle tuple>} containing recipes and names
+		"""
 		files_and_titles = self.list_titles()
 		titles = self._filter_titles(files_and_titles)
 		titles = fnmatch.filter(titles, text)
