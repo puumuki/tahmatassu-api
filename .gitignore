@@ -22,8 +22,8 @@ nosetests.xml
 MANIFEST~
 
 users.json
-server/users.py
-server/server_config.py
+tahmatassu-server/users.py
+tahmatassu-server/server_config.py
 *.sublime-project
 *.sublime-workspace
 _build/*
