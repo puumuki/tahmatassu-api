@@ -3,6 +3,8 @@ keys = {
 	'resource.not.found': u'Resurssia ei löytynyt',
 	'recipe.not.found': u'Reseptiä ei löytynyt',
 	'recipe.was.saved.succesfully': u'Resepti tallennettiin onnistuneesti',
+	'recipe.was.save.failed.name.error':'Reseptin tallentaminen epäonnistui, tiedoston nimeä ei voi hyväksyä.',
+	'recipe.was.save.failed.text.too.sort.error':'Reseptin tallentaminen epäonnistui, reseptillä täytyy olla sisältöä.',	
 	'missing.key': u'Tallennus parametri puuttu: %s',
 	'request.is.expecting.json': u'Pyyntö vaatii JSON-formaatissa olevaa tietoa.',
 	'resource.was.not.found': u'Pyyntämääsi resurssia ei löytynyt',

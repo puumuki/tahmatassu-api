@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="image-dialog" tabindex="-1" role="dialog" aria-labelledby="Kuvat" aria-hidden="true">
+<div class="modal fade" id="image-dialog" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -19,10 +19,10 @@
           {% for file in files %}
             <tr>
               <td>
-                <img class="small-image img-circle" src="{{base_url}}/{{file}}" width="32" height="32"></img>
+                <img class="small-image img-circle" src="{{base_url}}/{{file|urlencode()}}" width="32" height="32" alt="{{file}}">
               </td>
               <td class="text-middle">
-                <span class="image" data-imageurl="{{base_url}}/{{file}}">{{base_url}}/{{file}}</span>  
+                <span class="image" data-imageurl="{{base_url}}/{{file|urlencode()}}">{{base_url}}/{{file}}</span>  
               </td>
               <td class="text-middle">
                 <span>{{ file_size(upload_directory, file) }}</span> <span class="unit text-right">KiB</span>

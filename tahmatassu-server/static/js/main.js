@@ -3,13 +3,16 @@
 	$('.recipe-list span.remove').click(function(e) {
 		
 		var recipename = $(e.currentTarget).data('recipename');
-
+		console.log( recipename );
 		$('#modal-dialog').modal();
 		
 		$('#modal-dialog button.delete').click(function() {
 			Editor.io({
 				url: '/api/recipe/' + recipename,
 				type: 'DELETE',
+				onFailure: function( error ) {
+					console.error( error );
+				},
 				onSuccess: function() {
 					$(e.currentTarget).closest('li').fadeOut('slow');
 					$('#modal-dialog').modal('hide');
@@ -23,19 +26,19 @@
 		fileEnding : '.md',
 
 		ui : {
-			filename : $('#editor input[name="filename"]'),
-			textarea : $('#editor textarea'),
-			saveBtn : $('#editor .save-btn')
+			filename : $('#editor-area input[name="filename"]'),
+			textarea : $('#editor-area textarea'),
+			saveBtn : $('#editor-area .save-btn'),
+			message: $('#editor-area .message')
 		},
 
-
-
 		init : function() {
-			this.el = '#editor';
+			this.el = $('#editor-area');
 			
 			var that = this;
 			
 			$('.save-btn', this.el).click(function(e) {
+				console.log("click click");
 				that._onClickSaveBtn(e);
 			});
 
@@ -85,28 +88,28 @@
 			}, this));
 		},
 
-		_onClickCancelBtn : function(e) {
-			//$(this.ui.filename).popover('show');
-		},
-
 		_onClickSaveBtn : function(e) {
 			this.save();
 		},
 
 		save: function() {
-			var that = this;
+
 			var filename = this.ui.filename.val();
 			var markdown = this.ui.textarea.val();
+
 			this.io({ 
 				url: '/api/recipe',
 				type: 'POST',
 				data:{name:filename+this.fileEnding, 
 					  markdown:markdown}, 
-				onFailure:function() {
-					that.ui.saveBtn.button('reset')
-				}, 
+				onFailure: _.bind(function(error) {
+					this.ui.saveBtn.button('reset');
+					var message = error.responseJSON.message;
+					this.ui.message.removeClass('hidden').text(message);
+				}, this), 
 				onSuccess: _.bind(function() {
 					this._fileNameEditable = false;
+					this.ui.message.addClass('hidden');
 				}, this)
 			});	
 		},

@@ -11,10 +11,17 @@
       {% for file in files %}
         <tr>
           <td>
-            <img class="small-image img-circle" src="{{base_url}}/{{file}}" width="50" height="50"></img>
+            <img class="small-image img-circle" 
+                  src="{{base_url}}/{{file|urlencode}}" 
+                  width="50" height="50" 
+                  alt="{{file|urlencode()}}">
           </td>
           <td class="text-middle">
-            <span class="image" data-imageurl="{{base_url}}/{{file}}">{{base_url}}/{{file}}</span>
+            <a href="{{base_url}}/{{file|urlencode()}}">
+              <span class="image" data-imageurl="{{base_url}}/{{file|urlencode()}}">
+                {{base_url}}/{{file}}
+              </span>
+            </a>    
           </td>
           <td class="text-middle">
             <span>{{ file_size(upload_directory, file) }}</span> <span class="unit text-right">KiB</span>

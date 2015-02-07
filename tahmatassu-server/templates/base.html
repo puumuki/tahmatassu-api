@@ -3,7 +3,10 @@
   <head>
       <meta charset="utf-8">
       
-      <meta name="description" content="Finnish Cook Book">
+      <meta name="application-name" content="Tahmatassu Web Server">
+      
+      <meta name="author" content="Teemu Puukko">
+      <meta name="description" content="Digital Cook Book">
 
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,18 +15,12 @@
 
       <link rel="stylesheet" href="/static/css/bootstrap.min.css">
       <link rel="stylesheet" href="/static/css/bootstrap-theme.min.css">
-
       <link rel="stylesheet" href="/static/css/jquery.pagedown-bootstrap.css" >
-
       <link rel="stylesheet" href="/static/css/font-awesome.min.css">
-
       <link rel="stylesheet" href="/static/css/datatable.css"/>
-
       <link rel="stylesheet" href="/static/css/normalize.min.css">
       <link rel="stylesheet" href="/static/css/main.style.css">
-
       <link rel="stylesheet" href="/static/css/print.style.css"/>
-
 
       <link rel="icon" href="/static/icons/touch-icon-iphone.png" type="image/png" />
       <link rel="apple-touch-icon" href="static/icons/touch-icon-iphone.png" />
@@ -42,12 +39,12 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a href="/about"><img class="pawlogo" src="/static/img/paw.png" /></a>      
+        <a href="/about"><img class="pawlogo" src="/static/img/paw.png" alt="Tahmatassu Logo" /></a>      
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">          
           <li class="{% if nav == "recipes" %}active{% endif %}"><a href="/">Reseptit</a></li>
-          {% if user %}            
+          {% if user.is_authenticated %}          
           <li class="{% if nav == "images" %}active{% endif %}" ><a href="/upload">Kuvat</a></li>
           {% endif %}     
         </ul>
@@ -77,31 +74,17 @@
       {% block content %}{% endblock %}      
     </div> <!-- #main-container -->
 
-    <div id="modal-dialog" class="modal fade">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Haluatko varmasti poistaa reseptin?</h4>            
-          </div>
-          <div class="modal-body">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Peruuta</button>
-            <button type="button" class="btn btn-warning delete">Poista</button>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+    {% include 'modal-dialog.html' %}
 
-
-    <script src='/static/js/underscore.min.js'></script>
-    <script src='/static/js/jquery.1.11.0.js'></script>    
-    <script src='/static/js/bootstrap.min.js'></script> 
-    <script src='/static/js/bootstrap.file-input.js'></script> 
-    <script src='/static/js/keymaster.js'></script>    
-    <script src='/static/js/jquery.selection.js'></script>    
-    <script src='/static/js/jquery.pagedown-bootstrap.combined.min.js'></script>
-    <script src='/static/js/datatables.min.js'></script>
-    <script src='/static/js/datatables.bootsrap.js'></script>    
+    <script src='/static/js/lib/underscore.min.js'></script>
+    <script src='/static/js/lib/jquery.1.11.0.js'></script>    
+    <script src='/static/js/lib/bootstrap.min.js'></script> 
+    <script src='/static/js/lib/bootstrap.file-input.js'></script> 
+    <script src='/static/js/lib/keymaster.js'></script>    
+    <script src='/static/js/lib/jquery.selection.js'></script>    
+    <script src='/static/js/lib/jquery.pagedown-bootstrap.combined.min.js'></script>
+    <script src='/static/js/lib/datatables.min.js'></script>
+    <script src='/static/js/lib/datatables.bootsrap.js'></script>    
     <script src='/static/js/main.js'></script>
   </body>
 </html>

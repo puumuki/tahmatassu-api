@@ -1,7 +1,8 @@
-Pass user after authentication to page where she/he was before authentication
 Check if file exist when creating a new recipe, notify user when trying to override a file.
-Implement image upload support.
 Implement ability to change password
+Improve a recipe file name checkup, current implementation is not best possible
+(Done)Pass user after authentication to page where they was before authentication
+(DONE)Implement image upload support.
 (DONE)Give an error message on failed authentication
 (DONE)Implement search functionality
 (DONE)When saving a recipe, the old version should be stored to file by appending filename with .old.<revision>.filename.md

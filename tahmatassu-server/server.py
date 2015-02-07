@@ -52,7 +52,7 @@ def response(statuscode, key, arguments=None):
 	:param arguments:
 	:returns: reponse JSON 
 	"""
-	return json.dumps(msg(key, arguments), ensure_ascii=False), statuscode
+	return json.dumps({'message': msg(key, arguments)}, ensure_ascii=False), statuscode
 
 def authenticate(username, password):	
 	"""
@@ -225,8 +225,15 @@ def put_recipe():
 	try:						
 		recipe = Recipe(name=request.json[u'name'], 
 						markdown=request.json[u'markdown'])
-		app.storage.save(recipe)
-		return response(key='recipe.was.saved.succesfully', statuscode=httpcode.OK)
+
+		if recipe.valid_filename() and recipe.valid_markdown():
+			app.storage.save(recipe)
+			return response(key='recipe.was.saved.succesfully', statuscode=httpcode.OK)
+		elif not recipe.valid_filename():
+			return response(key='recipe.was.save.failed.name.error', statuscode=httpcode.NOT_ACCEPTABLE)
+		else:
+			return response(key='recipe.was.save.failed.text.too.sort.error', statuscode=httpcode.NOT_ACCEPTABLE)
+
 	except KeyError as error:
 		app.logger.error(error)
 		return response(key='missing.key', arguments=(str(error),), statuscode=httpcode.NOT_AVAILABLE)		

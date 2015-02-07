@@ -40,12 +40,15 @@ class Recipe:
 		return datetime.now() if time == None else datetime.fromtimestamp(int(time))
 	
 
-	def valid(self):
+	def valid_filename(self):
 		"""
 		Simple validation for the filename
 		"""
 		match = self.regexp.match(self.name)
 		return match != None		
+
+	def valid_markdown(self):
+		return len(self.markdown) > 0
 
 
 	def to_dictionary(self):

@@ -5,7 +5,7 @@
 <div class='jumbotron'> 
 	{% if user.is_authenticated %}
 	<div class="btn-group pull-right">
-		<a href="/edit/{{filename}}"><button type="button" class="btn btn-default">Muokkaa</button></a>
+		<a href="/edit/{{filename}}" class="btn btn-default">Muokkaa</a>
 	</div>
 	{% endif %}
 	{% autoescape off%}{{markdown}}{% endautoescape %}

@@ -24,7 +24,7 @@ class RecipeStorage:
 	"""
 
 
-	def __init__(self, directory, backup=False, logger=None):
+	def __init__(self, directory, backup=False, logger=None, cache=False):
 		self.backup = backup
 		self.directory = directory;
 
@@ -69,7 +69,7 @@ class RecipeStorage:
 		for file_name in files:
 			try:
 				with open(os.path.join( self.directory, file_name ), "r") as f:				
-					title = f.readline().decode("utf-8-sig")					
+					title = f.readline().decode("utf-8-sig").strip()					
 					names.append(FileAndTitle(file_name, title))
 			except UnicodeDecodeError as er:				
 				self._log("UnicodeDecodeError on %s file, skipping the file")
