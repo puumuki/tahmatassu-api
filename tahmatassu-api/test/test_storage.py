@@ -1,6 +1,6 @@
  #!/usr/bin/python
  # -*- coding: utf-8 -*-
-import unittest, os, sys, shutil
+import unittest, os, sys, shutil, time
 
 from tahmatassu.recipe import recipes_to_json
 from tahmatassu.recipe import Recipe
@@ -154,6 +154,20 @@ class TestRecipeStorage(unittest.TestCase):
 		recipes.append(Recipe('E.md', MARKDOWN))
 		json = recipes_to_json(recipes)
 		self.assertIsNotNone(json)
+
+	def test_list_file_history(self):
+		storage = RecipeStorage(TEST_DIRECTORY);
+		recipe = Recipe('MustikkaPiirakka.md', MARKDOWN)
+		storage.save(recipe)
+		storage.backup_recipe(recipe)
+		time.sleep(1)
+		storage.backup_recipe(recipe)
+		recipe=storage.load('MustikkaPiirakka.md')
+		recipes=storage.history(recipe)
+		self.assertEqual(len(recipes),2)
+
+		
+
 
 if __name__ == '__main__':
 	unittest.main()

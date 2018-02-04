@@ -33,6 +33,8 @@ from werkzeug.exceptions import RequestEntityTooLarge
 import file_utils
 import utils
 
+from utils import crossdomain
+
 from app import app
 
 
@@ -241,7 +243,9 @@ def put_recipe():
 		app.logger.error(error)
 		return response(key='request.is.expecting.json', statuscode=httpcode.NOT_AVAILABLE)
 	
+	
 @app.route("/api/recipes",  methods=['GET'])
+@crossdomain(origin='*')
 def list_recipes_only_names():
 	try:
 		return json.dumps(app.storage.list())
@@ -251,6 +255,7 @@ def list_recipes_only_names():
 	
 
 @app.route("/api/v2/recipes",  methods=['GET'])
+@crossdomain(origin='*')
 def list_recipes_with_content():
 	try:
 		recipes=[]

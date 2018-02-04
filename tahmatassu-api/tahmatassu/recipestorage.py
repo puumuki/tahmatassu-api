@@ -10,6 +10,9 @@ import codecs, difflib, fnmatch
 from collections import namedtuple
 from operator import attrgetter
 from datetime import datetime
+import glob
+import ntpath
+import re
 
 BACKUP_DATEFORMAT = '%Y-%m-%d %H_%M_%S'
 
@@ -22,8 +25,6 @@ class RecipeStorage:
 	for storing, loading, renaming and listing
 	recipes.
 	"""
-
-
 	def __init__(self, directory, backup=False, logger=None, cache=False):
 		self.backup = backup
 		self.directory = directory;
@@ -76,6 +77,23 @@ class RecipeStorage:
 
 		return self._sort_by_title(names)
 
+	def history(self,recipe):
+		"""
+		Return recipe's version history as a list. List contains Recipe objects in a
+		tronological order.
+		@param {Recipe} recipe
+		@return list of recipe objects 
+		"""
+		path = join(self.directory,'.old.*.%s' % (recipe.name))
+		files = glob.glob(path)
+		file_names = map(lambda f: ntpath.basename(f), files)
+		recipes = map( self.load, file_names )
+		map( lambda x: (x.name, x.recipe) , sequence)
+		pattern = ur"(.old.)(\d+-\d+-\d+ \d+_\d+_\d+).([A-z]+.md)"
+		result = re.compile(pattern).search(recipe.name)
+		prefix, date, name = result.groups()
+		return sorted( recipes, key=attrgetter('created'))
+
 	def load_all(self):
 		"""
 		Load all recipes from disk and return them in a array of Recipe objects
@@ -94,6 +112,7 @@ class RecipeStorage:
 
 		except IOError as error:
 			msg = 'Could not open file from: %s/%s ' % (self.directory, name)
+			print(error)
 			raise TassuException(msg, error)
 		except OSError as error:
 			msg = 'Could not open file from: %s/%s ' % (self.directory, name)

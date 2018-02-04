@@ -23,22 +23,22 @@ class TestRecipe(unittest.TestCase):
 						created=None,
 						modified=None)
 
-		self.assertEquals( True, recipe.valid() )
+		self.assertEquals( True, recipe.valid_filename() )
 		
 		recipe.name = 'MusikkaPiirakka'
-		self.assertEquals( False, recipe.valid() )
+		self.assertEquals( False, recipe.valid_filename() )
 
 		recipe.name = 'MusikkaPiirakka.'
-		self.assertEquals( False, recipe.valid() )
+		self.assertEquals( False, recipe.valid_filename() )
 
-		self.assertEquals( True, Recipe('1MusikkaPiirakka2.md', '').valid())
-		self.assertEquals( True, Recipe('1MusikkaPiirakka2.md', '').valid())
-		self.assertEquals( True, Recipe('2MusikkaPiirakka2.md', '').valid())
-		self.assertEquals( False, Recipe(u'.md', '').valid())
-		self.assertEquals( True, Recipe(u'2.md', '').valid())
-		self.assertEquals( True, Recipe(u'äö.md', '').valid())
-		self.assertEquals( True, Recipe(u'a.md', '').valid())
-		self.assertEquals( False, Recipe(u'a.MD', '').valid())
+		self.assertEquals( True, Recipe('1MusikkaPiirakka2.md', '').valid_filename())
+		self.assertEquals( True, Recipe('1MusikkaPiirakka2.md', '').valid_filename())
+		self.assertEquals( True, Recipe('2MusikkaPiirakka2.md', '').valid_filename())
+		self.assertEquals( False, Recipe(u'.md', '').valid_filename())
+		self.assertEquals( True, Recipe(u'2.md', '').valid_filename())
+		self.assertEquals( True, Recipe(u'äö.md', '').valid_filename())
+		self.assertEquals( True, Recipe(u'a.md', '').valid_filename())
+		self.assertEquals( False, Recipe(u'a.MD', '').valid_filename())
 
 if __name__ == '__main__':
 	unittest.main()
