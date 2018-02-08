@@ -14,6 +14,7 @@ from flask import url_for
 from flask import g
 from flask import redirect
 
+from flask_cors import CORS
 from flask.ext.compress import Compress
 
 from markdown2 import Markdown
@@ -33,6 +34,8 @@ from logging import Formatter
 from tahmatassu.recipestorage import RecipeStorage
 from middlewares import StreamConsumingMiddleware
 import server_config
+
+
 
 def create_console_logger_handler():
 	ch = logging.StreamHandler()
@@ -75,6 +78,9 @@ def load_users(userstorage):
 
 #Initializing Flask
 app = Flask(__name__)
+
+CORS(app)
+
 app.config.from_object(server_config)
 
 app.wsgi_app = StreamConsumingMiddleware(app.wsgi_app)

@@ -1,0 +1,35 @@
+/**
+ * Variables
+ */
+
+//Font related variables
+$font-family: Helvetica, Verdana, sans-serif;; 
+
+//Special font for highlighting some areas like header text
+$font-family-impact: "Impact";
+
+//This is base size of all font sizes
+$font-base-size: 16px;
+
+$font-size-small: 0.75rem;
+$font-size-reqular: 1rem;
+$font-size-large: 1.5rem;
+$font-size-x-large: 2rem;
+$font-size-xx-large: 3rem;
+
+/* ------------------- * 
+ * Web site's colors
+ * ------------------- */
+$background-color: #ffffff;
+$light-background: darken( $background-color, 20% );
+$dark-background: darken( $background-color, 40% );
+
+$white-color: #ffffff;
+
+$default-text: #000000;
+$dark-text: lighten( $default-text, 20% );
+$light-text: lighten( $default-text, 95% );
+
+$link-color: blue;
+
+$av-enable-grid-center: true;

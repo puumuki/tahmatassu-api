@@ -1,0 +1,30 @@
+<header>
+  <div class="grid grid--middle">
+    <div class="1/3--lap-and-up 1/2--pocket 1/2--palm 1/2--pocket grid__cell">
+      <div class="page-title">
+        <a href="#"><span>Tahmatassu</span></a>
+      </div>
+    </div>
+    
+    <nav class="2/3--lap-and-up 1/2--pocket 1/2--palm 1/2--pocket grid__cell navigation">
+      
+      <ul>
+        {{#each items}}
+          <li><a href="{{href}}">{{text}}</a></li>
+        {{/each}}
+      </ul>
+
+       <img class="icon" src="icons/menu.svg">
+    </nav>
+  </div>
+
+  <div class="grid">
+    <nav class="1/1--thumb grid__cell mobile-navigation">        
+      <ul>
+        {{#each items}}
+          <li><a href="{{href}}">{{text}}</a></li>
+        {{/each}}
+      </ul>
+    </nav>
+  </div>
+</header>

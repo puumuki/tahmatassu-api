@@ -1,0 +1,22 @@
+/**
+ * Big outline styles for the page
+ */
+.top-portion {
+  background-color: $background-color;
+  padding-bottom: 2em;
+}
+
+section.content {
+  background-color: $background-color;
+}
+
+body {
+  background-color: $background-color;  
+    
+  filter: blur(20px);
+
+  &.loaded {
+    filter: blur(0px);
+    transition: 2s filter linear;  
+  }  
+}

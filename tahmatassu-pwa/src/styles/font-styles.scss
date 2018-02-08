@@ -1,0 +1,84 @@
+/**
+ * Base Font Sizes
+ */
+* {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  font-family: $font-family;
+  font-size: $font-base-size;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  line-height: 20px;
+  color: black;
+}
+
+h1 {
+  font-family: $font-family;
+  font-size: $font-size-large;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 250;
+}
+
+h3 {
+  font-family: $font-family;
+  font-size: $font-size-reqular;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 200;
+
+}
+
+p {
+  font-family: $font-family;
+  font-size: $font-size-reqular;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 250;
+}
+
+address {
+  font-weight: 250;
+}
+
+blockquote {
+  font-family: $font-family;
+  font-size: $font-size-large;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+}
+
+pre {
+  font-family: $font-family;
+  font-size: $font-size-small;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+}
+
+/**
+ * General Styles for paragraphs and headings
+ */
+h1,h2,h3,h4,h5 {
+  margin-bottom: 0.5em;
+  text-transform: uppercase;
+}
+
+p {
+  margin-bottom: 1em;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+a {
+  text-decoration: none;
+  color: $link-color;
+}

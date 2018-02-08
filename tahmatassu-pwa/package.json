@@ -1,0 +1,33 @@
+{
+  "name": "tahmatassu-pwa",
+  "version": "1.0.0",
+  "description": "Tahmatassu PWA versin ",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "acorn": "^5.4.1",
+    "browser-sync": "^2.23.6",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.4.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-declare": "^0.3.0",
+    "gulp-handlebars": "^5.0.1",
+    "gulp-htmlmin": "^4.0.0",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-webpack": "^1.5.0",
+    "gulp-wrap": "^0.13.0",
+    "handlebar": "^1.0.0",
+    "handlebars-loader": "^1.6.0",
+    "jquery": "^3.2.1",
+    "riot-route": "^3.1.2",
+    "showdown": "^1.8.6",
+    "uglifyjs-webpack-plugin": "^1.1.5",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Teemu Puukko <teemuki@gmail.com> (http://github.com/puumuki)",
+  "license": "ISC"
+}

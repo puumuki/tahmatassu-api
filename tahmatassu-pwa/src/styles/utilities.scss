@@ -1,0 +1,56 @@
+/**
+ * Utility classes
+ */
+.content-block {
+  width: 90%;
+  margin: 0 auto;
+  padding-bottom: 0.5em;
+}  
+
+.top-block {
+  margin-top: 3em;
+}
+
+.vertical-align-middle {
+  vertical-align: middle;
+}
+
+.clearfix {
+  clear: both;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.center {
+    margin: 0 auto;
+}
+
+$shadow-lenght: 2px;
+$shadow-blurr-lenght: 2px;
+$shadow-color: #ccc;
+
+.box-shadow-top {
+  box-shadow: 0 (-$shadow-lenght) $shadow-blurr-lenght $shadow-color;
+}
+
+.box-shadow-bottom {
+  box-shadow: 0 $shadow-lenght $shadow-blurr-lenght $shadow-color;
+}

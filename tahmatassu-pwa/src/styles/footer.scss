@@ -1,0 +1,42 @@
+footer {
+    
+  @extend .box-shadow-top;
+
+  background:  linear-gradient(to bottom, rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%);
+  min-height:  200px;
+  color:       $white-color;  
+  text-align:  center;
+  padding-top: 2em;
+  font-size:   0.7em;
+
+  span {  
+    font-family: $font-family-impact;
+    letter-spacing: 0.4em;
+    font-weight: 200;
+  }
+
+  img {
+    margin-left: 0.5em; 
+    height: 1em;
+  }
+
+  .copyright {
+    width: 30%;
+    margin: 0 auto;
+    padding: 0.5em;
+
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    
+    border: solid 1px white;
+    border-radius: 2em;
+    
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0px 0px 40px 13px rgba(0,0,0,0.75);
+
+    @include av-mq(pocket) {
+       width: 60%;
+    }
+  }   
+}
