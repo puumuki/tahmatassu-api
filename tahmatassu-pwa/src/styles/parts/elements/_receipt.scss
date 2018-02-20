@@ -1,0 +1,23 @@
+/**
+ * Receipt's content styles
+ */
+.receipt {
+
+    padding-bottom: 2em;
+
+    ul {
+        list-style-type: none;
+        margin: 1em;
+    } 
+       
+    li:last-child {
+        border: none;
+    }  
+
+    //Don't let the images overflow the container
+    img {
+        width: 100%;
+        height: auto;
+    }   
+
+}

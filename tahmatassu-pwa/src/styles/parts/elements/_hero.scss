@@ -1,0 +1,45 @@
+/* --------------------- * 
+ * Hero Component Styles
+ * --------------------- */
+.hero {
+  
+  width: 100%;
+  text-align: center;  
+  color: $light-text;
+  min-height: 250px;
+  text-shadow: 0 0 10px black;
+  
+  transition: filter 2.5s ease;
+
+  //Black and white filter
+  filter: grayscale(100%);
+
+  background-image: url('../images/hero-stockholm.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.47);
+
+  //Alings hero component text to center of screen
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+
+  h1, p {
+    font-family: $font-family-impact;;  
+  } 
+
+  @include av-mq(pocket) {
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.47);
+    min-height: 150px;
+    p { font-size: 0.75em; }
+  }
+
+  &:hover {
+    filter: grayscale(0%);
+  }
+}
