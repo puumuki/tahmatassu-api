@@ -78,9 +78,11 @@ gulp.task('copy-icons', function () {
 });
 
 gulp.task('copy-javascript', function() {
-  return gulp.src('./src/js/*')
-             .pipe(gulp.dest('./dist/js/'));
+  return gulp.src('./src/js/*').pipe(gulp.dest('./dist/js/'));             
+});
 
+gulp.task('copy-serviceworker', function() {
+  return gulp.src('./src/serviceworker.js').pipe(gulp.dest('./dist/serviceworker.js'));
 });
 
 const sassSettings = {
@@ -129,7 +131,19 @@ gulp.task('browser-sync', function() {
 
 });
 
-gulp.task('build', ['sass','minify','copy-icons','copy-favicon', 'copy-manifest', 'copy-images', 'webpack']);
+/**
+ * Build distributable version 
+ */
+gulp.task('build', [
+  'sass',
+  'minify',
+  'copy-icons',
+  'copy-favicon',
+  'copy-manifest',
+  'copy-images',
+  'copy-serviceworker',
+  'webpack'
+]);
 
 //Watch task
 gulp.task('watch', function () {

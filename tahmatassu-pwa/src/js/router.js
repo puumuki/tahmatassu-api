@@ -28,7 +28,24 @@ route('/', function() {
   replaceContent( loadingTemplate(), {text: 'home'} );
 
   tahmatassu.fetchReceipts().then(function(receipts) {
-    replaceContent( indexTemplate({receipts: receipts}), {text:'index'} )
+
+    var firstletters = receipts.map((r)=>r.title.toUpperCase().substring(0,1));
+    var receiptsByTitleFirstLetter = {};
+
+    //Filter out multiple occurances
+    var letters = new Set( firstletters );
+
+    //Populate object with empty arrays
+    letters.forEach((letter) => {
+      receiptsByTitleFirstLetter[ letter ] = [];
+    });
+
+    receipts.forEach((receipt) => {
+      var letter = receipt.title.toUpperCase().substring(0,1);
+      receiptsByTitleFirstLetter[ letter ].push( receipt )
+    });
+    
+    replaceContent( indexTemplate({letters: receiptsByTitleFirstLetter}), {text:'index'} )
   }).catch(function( errors ) {
     console.error( errors );
   });
@@ -45,6 +62,20 @@ route('/receipt/*', function( name ) {
 route('/contact', function() {
   replaceContent( contactTemplate(), {text: 'contact'} );
 });
+
+
+// ServiceWorker is a progressive technology. Ignore unsupported browsers
+if ('serviceWorker' in navigator) {
+  console.log('CLIENT: service worker registration in progress.');
+  navigator.serviceWorker.register('http://127.0.0.1:8080/serviceworker.js').then(function() {
+    console.log('CLIENT: service worker registration complete.');
+  }, function() {
+    console.log('CLIENT: service worker registration failure.');
+  });
+} else {
+  console.log('CLIENT: service worker is not supported.');
+}
+
 
 
 exports.router = route;

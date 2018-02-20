@@ -1,9 +1,14 @@
-<div class="content-block receipt-list">
+<div class="receipt-list">
   <div class="grid grid--center">
     <div class="2/3--lap-and-up  1/1--palm 1/1--pocket grid__cell">
       <ul>
-      {{#each receipts}}
-        <a href="#/receipt/{{{name}}}"><li>{{title}}</li></a>
+      {{#each letters}}
+        <li class="letter">{{@key}}</li> 
+
+        {{#each this}}
+          <a href="#/receipt/{{{name}}}"><li>{{title}}</li></a>
+        {{/each}}
+        
       {{/each}}
       </ul>      
     </div>  

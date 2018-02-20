@@ -3,7 +3,7 @@
 var TahmatassuLocalDB = require('./tahmatassu-local-db');
 
 //const BASE_PATH = 'http://localhost:8080';
-const BASE_PATH = 'http://194.168.8.100:8080';
+const BASE_PATH = 'http://192.168.8.200:9001';
 
 class Tahmatassu {
 

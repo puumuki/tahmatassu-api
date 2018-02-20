@@ -3,7 +3,6 @@
  */
 .top-portion {
   background-color: $background-color;
-  padding-bottom: 2em;
 }
 
 section.content {
@@ -17,6 +16,6 @@ body {
 
   &.loaded {
     filter: blur(0px);
-    transition: 2s filter linear;  
+    transition: 0.5s filter linear;  
   }  
 }
