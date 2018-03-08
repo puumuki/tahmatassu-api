@@ -8,12 +8,12 @@ Users module hold userinfomation related logic
 
 import hashlib, shutilm, npath, os
 
-def load_userstorage(path):
+def _map_user( json ):
+	return User({'username' : user_obj,
+			'hash': json_data[user_obj].get('hash'),
+			'salt': json_data[user_obj].get('salt')})
 
-    def _map_user( json ):
-        return User({'username' : user_obj,
-              'hash': json_data[user_obj].get('hash'),
-              'salt': json_data[user_obj].get('salt')}
+def load_userstorage(path):
 
     with open(path,'r') as jsonfile:
         jsondata = json.loads(jsonfile)
