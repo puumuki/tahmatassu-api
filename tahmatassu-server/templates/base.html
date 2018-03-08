@@ -28,7 +28,7 @@
       <link rel="apple-touch-icon" sizes="120x120" href="/static/icons/touch-icon-iphone-retina.png" />
       <link rel="apple-touch-icon" sizes="152x152" href="/static/icons/touch-icon-ipad-retina.png" />
 
-      <meta property="og:title" content="{% block title %}{% endblock %}" />
+      <meta property="og:title" content="{{self.title()}}" />
       <meta property="og:description" content="{% block description %}{% endblock %}" />
   </head>
   <body>
