@@ -32,17 +32,22 @@ from werkzeug.exceptions import RequestEntityTooLarge
 
 import file_utils
 import utils
+import tokens
 
 from utils import crossdomain
 
 from app import app
 
+from datetime import timedelta
+from flask import make_response, request, current_app
+from functools import update_wrapper
 
 def is_authenticated():
 	"""
 	Test is user authenticated.
 	:returns: True if user is authenticated False otherwise
 	"""
+	app.logger.error( session )
 	return 'username' in session and session['username'] != None
 
 
@@ -168,7 +173,7 @@ def upload_file():
 								  error=request.args.get('error',''),
 								  base_url=app.config.get('BASE_URL'))
 
-@app.route("/api/login", methods=['POST'])
+@app.route("/api/login", methods=['POST','OPTIONS'])
 def login():	
 	page = '/'+request.form.get('history','index')
 	
@@ -217,16 +222,10 @@ def get_load_recipe(name):
 	except TassuException as error:		
 		return response(key='recipe.not.found', statuscode=httpcode.NOT_FOUND)
 	
-@app.route("/api/recipe",  methods=['PUT','POST'])
-def put_recipe():
-	if not is_authenticated():
-		return response(key='not.authority', statuscode=httpcode.UNAUTHORIZED)
-
-	app.logger.info( "%s saved a recipe %s " % (session.get('username'), request.json[u'name']))
-
+def save_recipe( name, markdown ):
 	try:						
-		recipe = Recipe(name=request.json[u'name'], 
-						markdown=request.json[u'markdown'])
+		recipe = Recipe(name=name, 
+										markdown=markdown)
 
 		if recipe.valid_filename() and recipe.valid_markdown():
 			app.storage.save(recipe)
@@ -242,8 +241,26 @@ def put_recipe():
 	except ValueError as error:
 		app.logger.error(error)
 		return response(key='request.is.expecting.json', statuscode=httpcode.NOT_AVAILABLE)
-	
-	
+
+@app.route("/api/recipe",  methods=['PUT','POST'])
+@crossdomain(origin='*')
+def put_recipe():
+	if not is_authenticated():
+		return response(key='not.authority', statuscode=httpcode.UNAUTHORIZED)
+
+	app.logger.info( "%s saved a recipe %s " % (session.get('username'), request.json[u'name']))
+	save_recipe(name=request.json[u'name'], 
+							markdown=request.json[u'markdown'])
+
+
+@app.route("/api/v2/recipe",  methods=['PUT','POST','OPTIONS'])
+@crossdomain(origin='*', headers=['Content-Type'])
+def put_recipe_v2():
+	if request.json.get(u'token') and tokens.is_token_valid( request.json.get(u'token')):
+		return save_recipe( request.json.get(u'name'), request.json.get(u'markdown') )
+	else:
+		return response(key='access.denied', statuscode=httpcode.UNAUTHORIZED)
+
 @app.route("/api/recipes",  methods=['GET'])
 @crossdomain(origin='*')
 def list_recipes_only_names():
@@ -267,6 +284,26 @@ def list_recipes_with_content():
 		app.logger.error(error)
 		return json.dumps([])
 	
+@app.route("/api/v2/login", methods=['POST','OPTIONS'])
+@crossdomain(origin='*', headers=['Content-Type'])
+def login_v2():		
+	if authenticate(request.json.get(u'username'), request.json.get(u'password')):
+		return json.dumps({"token": tokens.create()})
+	else:
+		app.logger.info('User %s failed to authenticate.' % request.form.get('username'))		
+		return response(statuscode=httpcode.UNAUTHORIZED, key="access.denied")
+
+@app.route("/api/v2/recipe/<recipe>", methods=['DELETE', 'OPTIONS'])
+@crossdomain(origin='*', headers=['Content-Type'])
+def delete_v2(recipe):
+	if request.json is not None and request.json.get(u'token') and tokens.is_token_valid( request.json.get(u'token')):
+		if app.storage.delete(recipe):
+			return response(key='recipe.delete', statuscode=httpcode.OK)
+		else:
+			return response(key='recipe.not_deleted', statuscode=httpcode.NOT_FOUND)
+	else:
+		return response(key='not.authority', statuscode=httpcode.UNAUTHORIZED)
+
 
 @app.errorhandler(404)
 def page_not_found(error):
@@ -287,5 +324,5 @@ def upload_error(error):
 
 if __name__ == "__main__":
 	app.run(host=app.config.get('HOST', '0.0.0.0'),
-			port=app.config.get('PORT', 8080),
+			port=app.config.get('PORT', ),
 			debug=app.config.get('DEBUG', False))

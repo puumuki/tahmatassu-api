@@ -24,17 +24,25 @@
 		</div>	
 	</div>
 	</div>
+
 	<div class="row top-buffer">
 		<div class="alert alert-warning message hidden" role="alert"></div>
 	</div>
 
-<div class="row">
-<textarea id="editor" class="form-control" rows="10">
-{% autoescape off%}{{markdown}}{% endautoescape %}
-</textarea>
-</div>
+	<div class="row">
+		<textarea id="editor" class="form-control" rows="10">
+		{% autoescape off%}{{markdown}}{% endautoescape %}
+		</textarea>
+	</div>
 
-{% include 'image-dialog.html' %}
+	{% include 'image-dialog.html' %}
+
+	<script type="module">
+	import '/static/js/lib/MarkdownEditor/MarkdownEditor.umd.js';
+
+	console.log( MarkdownEditor );
+	</script>
+	
 
 </div>
 {% endblock %}
