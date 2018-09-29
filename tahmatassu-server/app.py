@@ -14,7 +14,7 @@ from flask import url_for
 from flask import g
 from flask import redirect
 
-from flask.ext.compress import Compress
+from flask_compress import Compress
 
 from markdown2 import Markdown
 
@@ -58,8 +58,8 @@ def load_users(userstorage):
 
 	if not user_json_location or not os.path.exists(user_json_location):
 		app.logger.error("The user.json file don't exist, cannot load user information.")
-		app.logger.error("Check README.MD for more information.");
-		return;
+		app.logger.error("Check README.MD for more information.")
+		return
 
 	try:
 		with open(user_json_location, 'r') as json_file:
