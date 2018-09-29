@@ -27,7 +27,8 @@ class RecipeStorage:
 	"""
 	def __init__(self, directory, backup=False, logger=None, cache=False):
 		self.backup = backup
-		self.directory = directory;
+		self.directory = directory
+		self._logger = logger
 
 	def _log(self,text):
 		if self._logger:
