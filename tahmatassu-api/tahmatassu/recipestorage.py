@@ -89,8 +89,8 @@ class RecipeStorage:
 		files = glob.glob(path)
 		file_names = map(lambda f: ntpath.basename(f), files)
 		recipes = map( self.load, file_names )
-		map( lambda x: (x.name, x.recipe) , sequence)
-		pattern = ur"(.old.)(\d+-\d+-\d+ \d+_\d+_\d+).([A-z]+.md)"
+		#map( lambda x: (x.name, x.recipe) , sequence)//Line is not in use
+		pattern = r"(.old.)(\d+-\d+-\d+ \d+_\d+_\d+).([A-z]+.md)"
 		result = re.compile(pattern).search(recipe.name)
 		prefix, date, name = result.groups()
 		return sorted( recipes, key=attrgetter('created'))

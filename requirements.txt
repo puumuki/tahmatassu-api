@@ -1,0 +1,9 @@
+Flask==0.12.2
+Flask-Bcrypt==0.7.1
+Flask-Migrate==2.1.0
+Flask-Script==2.0.5
+Flask-Testing==0.6.2
+flask-compress==1.4.0
+Jinja2==2.9.6
+markdown2==2.3.7
+./tahmatassu-api
