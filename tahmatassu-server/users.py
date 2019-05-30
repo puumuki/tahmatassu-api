@@ -8,7 +8,6 @@ Users module hold userinfomation related logic
 
 import hashlib
 
-
 def calculate_hash(stuff):
 	"""
 	Calculate sha1 hash sum for given stuff
@@ -41,7 +40,7 @@ class User:
 		:returns: Return True if user is authenticated otherwise False
 		"""
 		sha1 = hashlib.sha1()
-		sha1.update(password+self.salt)	
+		sha1.update((password+self.salt).encode('utf-8'))	
 		password_hash = sha1.hexdigest()
 		self.authenticated = password_hash == self.hash
 		return self.authenticated		

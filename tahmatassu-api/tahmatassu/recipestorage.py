@@ -2,10 +2,10 @@
  # -*- coding: utf-8 -*-
 import os, time, shutil
 import codecs
-from recipe import Recipe
+from .recipe import Recipe
 from os import listdir
 from os.path import isfile, join
-from tassuexception import TassuException
+from .tassuexception import TassuException
 import codecs, difflib, fnmatch
 from collections import namedtuple
 from operator import attrgetter
@@ -37,7 +37,7 @@ class RecipeStorage:
 			print(text)
 
 	def _filter_titles(self, files_and_titles):
-		return map((lambda o: o.title), files_and_titles)
+		return list(map((lambda o: o.title), files_and_titles))
 
 	def _sort_by_title(self, files_and_titles):
 		return sorted(files_and_titles, key=attrgetter('title'))
@@ -47,7 +47,7 @@ class RecipeStorage:
 		Return list of file names, sorted alphabetically.
 		"""
 		files = [ f for f in listdir(self.directory) if isfile(join(self.directory,f))]
-		files = filter(lambda filename:self._filter_rules(filename), files)
+		files = [filename for filename in files if self._filter_rules(filename)]
 		return sorted(files)
 
 	def _filter_rules(self,filename):
@@ -71,7 +71,7 @@ class RecipeStorage:
 		for file_name in files:
 			try:
 				with open(os.path.join( self.directory, file_name ), "r") as f:				
-					title = f.readline().decode("utf-8-sig").strip()					
+					title = f.readline().strip()					
 					names.append(FileAndTitle(file_name, title))
 			except UnicodeDecodeError as er:				
 				self._log("UnicodeDecodeError on %s file, skipping the file")
@@ -87,8 +87,8 @@ class RecipeStorage:
 		"""
 		path = join(self.directory,'.old.*.%s' % (recipe.name))
 		files = glob.glob(path)
-		file_names = map(lambda f: ntpath.basename(f), files)
-		recipes = map( self.load, file_names )
+		file_names = [ntpath.basename(f) for f in files]
+		recipes = list(map( self.load, file_names ))
 		#map( lambda x: (x.name, x.recipe) , sequence)//Line is not in use
 		pattern = r"(.old.)(\d+-\d+-\d+ \d+_\d+_\d+).([A-z]+.md)"
 		result = re.compile(pattern).search(recipe.name)
@@ -112,11 +112,11 @@ class RecipeStorage:
 			return recipes
 
 		except IOError as error:
-			msg = 'Could not open file from: %s/%s ' % (self.directory, name)
+			msg = 'Could not open file from: %s/%s ' % (self.directory,)
 			print(error)
 			raise TassuException(msg, error)
 		except OSError as error:
-			msg = 'Could not open file from: %s/%s ' % (self.directory, name)
+			msg = 'Could not open file from: %s/%s ' % (self.directory,)
 			raise TassuException(msg, error)
 
 	def load(self, name):
@@ -185,7 +185,7 @@ class RecipeStorage:
 			self.backup_recipe(recipe)
 
 		with open(recipe_path, 'w') as file:
-			file.write(recipe.markdown.encode('UTF-8'))
+			file.write(recipe.markdown)
 
 	def fuzzy_search(self, text, n=3, cutoff=0.2):
 		"""
@@ -198,7 +198,7 @@ class RecipeStorage:
 		files_and_titles = self.list_titles()
 		titles = self._filter_titles(files_and_titles)
 		titles = difflib.get_close_matches(text, titles, n=n, cutoff=cutoff)
-		files_and_titles = filter(lambda o: o.title in titles, files_and_titles)
+		files_and_titles = [o for o in files_and_titles if o.title in titles]
 		return self._sort_by_title(files_and_titles)
 		
 	def wildcard_search(self, text):
@@ -210,5 +210,5 @@ class RecipeStorage:
 		files_and_titles = self.list_titles()
 		titles = self._filter_titles(files_and_titles)
 		titles = fnmatch.filter(titles, text)
-		files_and_titles = filter(lambda o: o.title in titles, files_and_titles)
+		files_and_titles = [o for o in files_and_titles if o.title in titles]
 		return self._sort_by_title(files_and_titles)

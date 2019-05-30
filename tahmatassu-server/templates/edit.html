@@ -4,45 +4,38 @@
 {% block content %}
 <div id="editor-area" class="editor-area jumbotron">  
 
-	<div class="row">
-	<div class="input-group">
-		<input type="text" class="form-control input-small"
-			   placeholder="Tiedoston nimi" 
-			   name="filename" 
-			   value="{{filename}}"
-			   data-recipename="{{filename}}" 
-			   readonly
-			   data-toggle="popover" 
-			   data-placement="right" 
-			   data-content="{{ 'Tiedoston nimi on jo käytössä, nimeä resepti uudelleen.'|urlencode() }}">
-			   
-		<span class="input-group-addon">.md</span>
+  <div class="row">
+  <div class="input-group">
+    <input type="text" class="form-control input-small"
+         placeholder="Tiedoston nimi" 
+         name="filename" 
+         value="{{filename}}"
+         data-recipename="{{filename}}" 
+         readonly
+         data-toggle="popover" 
+         data-placement="right" 
+         data-content="{{ 'Tiedoston nimi on jo käytössä, nimeä resepti uudelleen.'|urlencode() }}">
+         
+    <span class="input-group-addon">.md</span>
 
-		<div class="btn-group pull-right">
-			<a href="{{editurl|urlencode()}}" class="btn btn-default cancel-btn">Palaa</a>
-	  		<a class="btn btn-default save-btn">Tallenna</a>
-		</div>	
-	</div>
-	</div>
+    <div class="btn-group pull-right">
+      <a href="{{editurl|urlencode()}}" class="btn btn-default cancel-btn">Palaa</a>
+        <a class="btn btn-default save-btn">Tallenna</a>
+    </div>	
+  </div>
+  </div>
 
-	<div class="row top-buffer">
-		<div class="alert alert-warning message hidden" role="alert"></div>
-	</div>
+  <div class="row top-buffer">
+    <div class="alert alert-warning message hidden" role="alert"></div>
+  </div>
 
-	<div class="row">
-		<textarea id="editor" class="form-control" rows="10">
-		{% autoescape off%}{{markdown}}{% endautoescape %}
-		</textarea>
-	</div>
+<div class="row">
+<textarea id="editor" class="form-control" rows="10">
+{% autoescape off%}{{markdown}}{% endautoescape %}
+</textarea>
+</div>
 
-	{% include 'image-dialog.html' %}
-
-	<script type="module">
-	import '/static/js/lib/MarkdownEditor/MarkdownEditor.umd.js';
-
-	console.log( MarkdownEditor );
-	</script>
-	
+  {% include 'image-dialog.html' %}
 
 </div>
 {% endblock %}

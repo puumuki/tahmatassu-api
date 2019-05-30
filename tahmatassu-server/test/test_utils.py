@@ -27,14 +27,14 @@ data = [FileAndTitle(filename='cassey.md', title='Cassey'),
 
 class TestServer(unittest.TestCase):
 
-    def test_sort_alphabetically_to_dictionary(self):
-        dictionary = utils.sort_alphabetically_to_dictionary(data)
-        self.assertSequenceEqual(sorted(dictionary.keys()),['*','A','C','F','H','J', 'P','S' ,'T','V'])
+  def test_sort_alphabetically_to_dictionary(self):
+    dictionary = utils.sort_alphabetically_to_dictionary(data)
+    self.assertSequenceEqual(sorted(dictionary.keys()),['*','A','C','F','H','J', 'P','S' ,'T','V'])
 
-    def test_sort_alphabetically_to_dictionary_2(self):
-        dictionary = utils.sort_alphabetically_to_dictionary([])
-        self.assertIsNotNone(dictionary)
+  def test_sort_alphabetically_to_dictionary_2(self):
+    dictionary = utils.sort_alphabetically_to_dictionary([])
+    self.assertIsNotNone(dictionary)
 
 
 if __name__ == '__main__':
-    unittest.main()
+  unittest.main()

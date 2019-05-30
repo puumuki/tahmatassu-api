@@ -28,7 +28,7 @@ def list_allowed_files():
 	:return list containing file names
 	"""
 	files = list_files(app.config.get('UPLOAD_DIRECTORY'))
-	return filter(allowed_file, files)
+	return list(filter(allowed_file, files))
 
 def list_files(path):
 	"""

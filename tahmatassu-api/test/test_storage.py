@@ -10,13 +10,13 @@ from tahmatassu.tassuexception import TassuException
 TEST_DIRECTORY = os.path.join("test", "storage")
 
 
-MARKDOWN = u"Mummin kermatortut\n==================\n"\
-			u"+ 3dl kermaa\n"\
-			u"+ 1tl leivinjauhetta\n"\
-			u"+ 6,5dl vehnäjauhoja\n"\
-			u"+ 250g voita\n"\
-			u"Kerma vatkataan vaahdoksi. Kuivat aineet sekoitetaan ja sekoitetaan kermanjoukkoon.\n"\
-			u"Voi vaivataan muiden aineiden jatkoksi.\n"		
+MARKDOWN = "Mummin kermatortut\n==================\n"\
+			"+ 3dl kermaa\n"\
+			"+ 1tl leivinjauhetta\n"\
+			"+ 6,5dl vehnäjauhoja\n"\
+			"+ 250g voita\n"\
+			"Kerma vatkataan vaahdoksi. Kuivat aineet sekoitetaan ja sekoitetaan kermanjoukkoon.\n"\
+			"Voi vaivataan muiden aineiden jatkoksi.\n"		
 
 
 class TestRecipeStorage(unittest.TestCase):

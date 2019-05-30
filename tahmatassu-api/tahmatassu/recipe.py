@@ -11,7 +11,7 @@ def recipes_to_json(recipes):
 	"""
 	Array of recipe objects to json
 	"""
-	data = map(lambda recipe: recipe.to_dictionary(), recipes)
+	data = [recipe.to_dictionary() for recipe in recipes]
 	return json.dumps(data, ensure_ascii=False)
 
 
