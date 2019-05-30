@@ -70,8 +70,8 @@ class RecipeStorage:
 
 		for file_name in files:
 			try:
-				with open(os.path.join( self.directory, file_name ), "r") as f:				
-					title = f.readline().strip()					
+				with open(os.path.join( self.directory, file_name ), "r",  encoding='utf-8') as f:				
+					title = f.readline().strip()				
 					names.append(FileAndTitle(file_name, title))
 			except UnicodeDecodeError as er:				
 				self._log("UnicodeDecodeError on %s file, skipping the file")
