@@ -31,3 +31,4 @@ conf.py
 Makefile
 index.py
 *.bak
+.vscode/*
