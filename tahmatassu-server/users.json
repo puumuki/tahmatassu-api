@@ -1,0 +1,12 @@
+{
+  "teemuki": {
+      "hash": "7266f65d521c265607b81cc39a4f18a35abd01b2",
+      "role": "editor",
+      "salt": "KR6BVTC5N2"
+  },
+  "ressu": {
+    "hash": "0ac0e07964a0ba34471233cf24358dfe164b5711",
+    "salt": "F5W3PV",
+    "role":"editor"
+  }
+}

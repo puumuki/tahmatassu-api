@@ -20,10 +20,6 @@ nosetests.xml
 *.*~
 *.bat
 MANIFEST~
-
-users.json
-tahmatassu-server/users.py
-tahmatassu-server/server_config.py
 *.sublime-project
 *.sublime-workspace
 _build/*
