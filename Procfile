@@ -1,0 +1,1 @@
+web: gunicorn tahmatassu-server.server:server
