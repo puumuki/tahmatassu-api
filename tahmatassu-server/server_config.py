@@ -7,7 +7,7 @@ DEBUG = True
 SECRET_KEY =  os.environ.get('SECRET_KEY', None)
 LANGUAGE = 'fi'
 HOST = '0.0.0.0'
-PORT = 9001
+PORT = os.environ.get('PORT', 9001)
 
 #Directory where recipes are stored
 RECIPE_DIRECTORY = os.path.join( BASE_PATH, 'recipes')
