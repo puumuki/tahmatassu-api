@@ -326,6 +326,11 @@ def upload_error(error):
   app.logger.error(error)	
   return redirect('/upload?error=true')
 
+def server():
+  app.run(host=app.config.get('HOST', '0.0.0.0'),
+          port=app.config.get('PORT', ),
+          debug=app.config.get('DEBUG', False))
+
 if __name__ == "__main__":
   app.run(host=app.config.get('HOST', '0.0.0.0'),
       port=app.config.get('PORT', ),
