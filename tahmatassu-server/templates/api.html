@@ -79,6 +79,39 @@ Response JSON:
 
   </div>
 </div>
+
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <strong>List all static files available on the server</strong>
+  </div>
+  <div class="panel-body">
+    <h3>Method: <span class="method">GET</span></h3>
+    <p>Route: <span class="route">/api/files</span></p>
+    
+<pre>
+Response JSON:
+["http://localhost:9001/static/img/file.jpg"]
+</pre>
+
+  </div>
+</div>
+
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <strong>List all recipes with the content</strong>
+  </div>
+  <div class="panel-body">
+    <h3>Method: <span class="method">GET</span></h3>
+    <p>Route: <span class="route">/api/v2/recipes</span></p>
+    
+<pre>
+Response JSON:
+[{"name": "Mustikkapiiras", markdown:"markdownsdfsdf", created: "2019-05-28 20:09:44", modified: "2019-05-28 20:09:44"}]
+</pre>
+
+  </div>
+</div>
+
 </div>
 </div>
 {% endblock %}

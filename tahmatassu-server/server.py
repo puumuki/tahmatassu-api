@@ -42,6 +42,10 @@ from datetime import timedelta
 from flask import make_response, request, current_app
 from functools import update_wrapper
 
+from os import listdir
+from os.path import isfile, join
+
+
 def is_authenticated():
   """
   Test is user authenticated.
@@ -134,9 +138,11 @@ def edit(recipe):
 
 @app.route("/recipe/<recipe>")
 def recipe(recipe):
+  
+  
   try:
     recipeobj = app.storage.load(recipe)
-    markdown = recipeobj.markdown.replace('http://puumuki.game-server.cc/static/img', app.config.get('BASE_URL') )
+    markdown = recipeobj.markdown.replace( app.config.get('PUBLIC_URL') + '/static/img', app.config.get('BASE_URL') )
     markdown = app.markdown.convert(markdown)
     return render_template('recipe.html',user=g.user,
                        filename=recipeobj.name, 
@@ -264,6 +270,15 @@ def put_recipe_v2():
     return save_recipe( request.json.get('name'), request.json.get('markdown') )
   else:
     return response(key='access.denied', statuscode=httpcode.UNAUTHORIZED)
+
+@app.route("/api/files", methods=['GET'])
+@crossdomain(origin='*')
+def list_all_files():
+  path = app.config.get('UPLOAD_DIRECTORY')
+  files = [f for f in listdir(path) if isfile(join(path, f))]
+  files = map(lambda x: app.config.get('PUBLIC_URL') + app.config.get('PUBLIC_RELATIVE_FILE_URL') +"/"+ x, files )
+  return json.dumps( list(files) )
+  
 
 @app.route("/api/recipes",  methods=['GET'])
 @crossdomain(origin='*')

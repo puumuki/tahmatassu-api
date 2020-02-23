@@ -18,6 +18,12 @@ USER_STORAGE = os.path.join( BASE_PATH, 'users.json')
 #URL used to reference to image files
 BASE_URL = "http://localhost:%s/static/img" % ( PORT, )
 
+#Public URL address 
+PUBLIC_URL = "http://localhost:9001"
+
+#Public URL address for for static files, like images
+PUBLIC_RELATIVE_FILE_URL = "/static/img"
+
 #Directory where images and other stuff can be loaded, not implementet touch..
 UPLOAD_DIRECTORY = os.path.join( BASE_PATH, 'static', 'img')
 
