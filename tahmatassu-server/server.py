@@ -142,7 +142,8 @@ def recipe(recipe):
   
   try:
     recipeobj = app.storage.load(recipe)
-    markdown = recipeobj.markdown.replace( app.config.get('PUBLIC_URL') + '/static/img', app.config.get('BASE_URL') )
+    markdown = recipeobj.markdown.replace( "http://puumuki.game-server.cc/static/img", 
+                                            app.config.get('PUBLIC_URL') + app.config.get('PUBLIC_RELATIVE_FILE_URL') )
     markdown = app.markdown.convert(markdown)
     return render_template('recipe.html',user=g.user,
                        filename=recipeobj.name, 
